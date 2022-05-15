@@ -3,7 +3,7 @@ SOURCE     = $(wildcard src/*.cpp)
 OBJECT     = $(subst src,obj,$(SOURCE:.cpp=.o))
 DEPENDENCY = $(OBJECT:.o=.d)
 INCLUDE    = include
-LIBRARY    = lib /usr/X11/lib /usr/X11R6/lib
+LIBRARY    = lib /usr/X11/lib
 LINK	   = liquidfun GL glut glui X11 Xrandr Xxf86vm
 TARGET     = build/main
 DEFINE	   = GL_SILENCE_DEPRECATION
