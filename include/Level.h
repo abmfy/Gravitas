@@ -14,18 +14,18 @@ typedef Level* TestCreateFcn();
 #define DRAW_STRING_NEW_LINE 25
 
 /// Random number in range [-1,1]
-inline float32 RandomFloat()
+inline float RandomFloat()
 {
-	float32 r = (float32)(rand() & (RAND_LIMIT));
+	float r = (float)(rand() & (RAND_LIMIT));
 	r /= RAND_LIMIT;
 	r = 2.0f * r - 1.0f;
 	return r;
 }
 
 /// Random floating point number in range [lo, hi]
-inline float32 RandomFloat(float32 lo, float32 hi)
+inline float RandomFloat(float lo, float hi)
 {
-	float32 r = (float32)(rand() & (RAND_LIMIT));
+	float r = (float)(rand() & (RAND_LIMIT));
 	r /= RAND_LIMIT;
 	r = (hi - lo) * r + lo;
 	return r;
@@ -67,32 +67,32 @@ struct Settings
 	}
 
 	b2Vec2 viewCenter;
-	float32 hz;
-	int32 velocityIterations;
-	int32 positionIterations;
-	int32 particleIterations;
-	int32 drawShapes;
-	int32 drawParticles;
-	int32 drawJoints;
-	int32 drawAABBs;
-	int32 drawContactPoints;
-	int32 drawContactNormals;
-	int32 drawContactImpulse;
-	int32 drawFrictionImpulse;
-	int32 drawCOMs;
-	int32 drawStats;
-	int32 drawProfile;
-	int32 enableWarmStarting;
-	int32 enableContinuous;
-	int32 enableSubStepping;
-	int32 enableSleep;
-	int32 pause;
-	int32 singleStep;
-	int32 printStepTimeStats;
-	int32 strictContacts;
+	float hz;
+	int velocityIterations;
+	int positionIterations;
+	int particleIterations;
+	int drawShapes;
+	int drawParticles;
+	int drawJoints;
+	int drawAABBs;
+	int drawContactPoints;
+	int drawContactNormals;
+	int drawContactImpulse;
+	int drawFrictionImpulse;
+	int drawCOMs;
+	int drawStats;
+	int drawProfile;
+	int enableWarmStarting;
+	int enableContinuous;
+	int enableSubStepping;
+	int enableSleep;
+	int pause;
+	int singleStep;
+	int printStepTimeStats;
+	int strictContacts;
 
 	/// Measures how long did the world step took, in ms
-	float32 stepTimeOut;
+	float stepTimeOut;
 };
 
 struct TestEntry {
@@ -110,12 +110,12 @@ public:
 	void SayGoodbye(b2Joint*) override;
 	void SayGoodbye(b2ParticleGroup*) override;
 
-	void SayGoodbye(b2ParticleSystem*, int32) override;
+	void SayGoodbye(b2ParticleSystem*, int) override;
 
 	Level *level;
 };
 
-const int32 k_maxContactPoints = 2048;
+const int k_maxContactPoints = 2048;
 
 struct ContactPoint
 {
@@ -124,9 +124,9 @@ struct ContactPoint
 	b2Vec2 normal;
 	b2Vec2 position;
 	b2PointState state;
-	float32 normalImpulse;
-	float32 tangentImpulse;
-	float32 separation;
+	float normalImpulse;
+	float tangentImpulse;
+	float separation;
 };
 
 class Level : public b2ContactListener
@@ -171,7 +171,7 @@ public:
 	}
 
 	void ShiftOrigin(const b2Vec2& newOrigin);
-	virtual float32 GetDefaultViewZoom() const;
+	virtual float GetDefaultViewZoom() const;
 
 	// Apply a preset range of colors to a particle group.
 	// A different color out of k_ParticleColors is applied to each
@@ -199,10 +199,10 @@ protected:
 	b2Body* m_groundBody;
 	b2AABB m_worldAABB;
 	ContactPoint m_points[k_maxContactPoints];
-	int32 m_pointCount;
+	int m_pointCount;
 	DestructionListener m_destructionListener;
 	DebugDraw m_debugDraw;
-	int32 m_textLine;
+	int m_textLine;
 	b2World* m_world;
 	b2ParticleSystem* m_particleSystem;
 	b2Body* m_bomb;
@@ -213,7 +213,7 @@ protected:
 	bool m_mouseTracing;
 	b2Vec2 m_mouseTracerPosition;
 	b2Vec2 m_mouseTracerVelocity;
-	int32 m_stepCount;
+	int m_stepCount;
 
 	b2Profile m_maxProfile;
 	b2Profile m_totalProfile;

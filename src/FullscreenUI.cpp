@@ -25,12 +25,12 @@ const bool FullscreenUI::k_enabledDefault = true;
 #else
 const bool FullscreenUI::k_enabledDefault = false;
 #endif // defined(__ANDROID__) || defined(__IOS__)
-const float32 FullscreenUI::k_arrowScale = 0.15f;
-const float32 FullscreenUI::k_arrowScaleSmall = 0.075f;
-const float32 FullscreenUI::k_arrowSpacing = 0.005f;
-const float32 FullscreenUI::k_arrowTestX =
+const float FullscreenUI::k_arrowScale = 0.15f;
+const float FullscreenUI::k_arrowScaleSmall = 0.075f;
+const float FullscreenUI::k_arrowSpacing = 0.005f;
+const float FullscreenUI::k_arrowTestX =
 	FullscreenUI::k_arrowScale + FullscreenUI::k_arrowSpacing;
-const float32 FullscreenUI::k_arrowParticleParameterX =
+const float FullscreenUI::k_arrowParticleParameterX =
 	FullscreenUI::k_arrowTestX + FullscreenUI::k_arrowScale +
 	FullscreenUI::k_arrowScaleSmall + FullscreenUI::k_arrowSpacing;
 
@@ -68,8 +68,8 @@ void FullscreenUI::Reset()
 
 // Process mouse events and perform arrow selection returning the
 // ID of the selected arrow if it has been clicked.
-uint32 FullscreenUI::Mouse(const int32 button, const int32 state,
-						   const int32 previousState,
+uint32 FullscreenUI::Mouse(const int button, const int state,
+						   const int previousState,
 						   const b2Vec2 &mousePosition)
 {
 	if (GetEnabled() && button == GLUT_LEFT_BUTTON)

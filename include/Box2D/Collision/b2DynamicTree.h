@@ -39,15 +39,15 @@ struct b2TreeNode
 
 	union
 	{
-		int32 parent;
-		int32 next;
+		int parent;
+		int next;
 	};
 
-	int32 child1;
-	int32 child2;
+	int child1;
+	int child2;
 
 	// leaf = 0, free node = -1
-	int32 height;
+	int height;
 };
 
 /// A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
@@ -68,23 +68,23 @@ public:
 	~b2DynamicTree();
 
 	/// Create a proxy. Provide a tight fitting AABB and a userData pointer.
-	int32 CreateProxy(const b2AABB& aabb, void* userData);
+	int CreateProxy(const b2AABB& aabb, void* userData);
 
 	/// Destroy a proxy. This asserts if the id is invalid.
-	void DestroyProxy(int32 proxyId);
+	void DestroyProxy(int proxyId);
 
 	/// Move a proxy with a swepted AABB. If the proxy has moved outside of its fattened AABB,
 	/// then the proxy is removed from the tree and re-inserted. Otherwise
 	/// the function returns immediately.
 	/// @return true if the proxy was re-inserted.
-	bool MoveProxy(int32 proxyId, const b2AABB& aabb1, const b2Vec2& displacement);
+	bool MoveProxy(int proxyId, const b2AABB& aabb1, const b2Vec2& displacement);
 
 	/// Get proxy user data.
 	/// @return the proxy user data or 0 if the id is invalid.
-	void* GetUserData(int32 proxyId) const;
+	void* GetUserData(int proxyId) const;
 
 	/// Get the fat AABB for a proxy.
-	const b2AABB& GetFatAABB(int32 proxyId) const;
+	const b2AABB& GetFatAABB(int proxyId) const;
 
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
@@ -106,14 +106,14 @@ public:
 
 	/// Compute the height of the binary tree in O(N) time. Should not be
 	/// called often.
-	int32 GetHeight() const;
+	int GetHeight() const;
 
 	/// Get the maximum balance of an node in the tree. The balance is the difference
 	/// in height of the two children of a node.
-	int32 GetMaxBalance() const;
+	int GetMaxBalance() const;
 
 	/// Get the ratio of the sum of the node areas to the root area.
-	float32 GetAreaRatio() const;
+	float GetAreaRatio() const;
 
 	/// Build an optimal tree. Very expensive. For testing.
 	void RebuildBottomUp();
@@ -125,41 +125,41 @@ public:
 
 private:
 
-	int32 AllocateNode();
-	void FreeNode(int32 node);
+	int AllocateNode();
+	void FreeNode(int node);
 
-	void InsertLeaf(int32 node);
-	void RemoveLeaf(int32 node);
+	void InsertLeaf(int node);
+	void RemoveLeaf(int node);
 
-	int32 Balance(int32 index);
+	int Balance(int index);
 
-	int32 ComputeHeight() const;
-	int32 ComputeHeight(int32 nodeId) const;
+	int ComputeHeight() const;
+	int ComputeHeight(int nodeId) const;
 
-	void ValidateStructure(int32 index) const;
-	void ValidateMetrics(int32 index) const;
+	void ValidateStructure(int index) const;
+	void ValidateMetrics(int index) const;
 
-	int32 m_root;
+	int m_root;
 
 	b2TreeNode* m_nodes;
-	int32 m_nodeCount;
-	int32 m_nodeCapacity;
+	int m_nodeCount;
+	int m_nodeCapacity;
 
-	int32 m_freeList;
+	int m_freeList;
 
 	/// This is used to incrementally traverse the tree for re-balancing.
 	uint32 m_path;
 
-	int32 m_insertionCount;
+	int m_insertionCount;
 };
 
-inline void* b2DynamicTree::GetUserData(int32 proxyId) const
+inline void* b2DynamicTree::GetUserData(int proxyId) const
 {
 	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].userData;
 }
 
-inline const b2AABB& b2DynamicTree::GetFatAABB(int32 proxyId) const
+inline const b2AABB& b2DynamicTree::GetFatAABB(int proxyId) const
 {
 	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].aabb;
@@ -168,12 +168,12 @@ inline const b2AABB& b2DynamicTree::GetFatAABB(int32 proxyId) const
 template <typename T>
 inline void b2DynamicTree::Query(T* callback, const b2AABB& aabb) const
 {
-	b2GrowableStack<int32, 256> stack;
+	b2GrowableStack<int, 256> stack;
 	stack.Push(m_root);
 
 	while (stack.GetCount() > 0)
 	{
-		int32 nodeId = stack.Pop();
+		int nodeId = stack.Pop();
 		if (nodeId == b2_nullNode)
 		{
 			continue;
@@ -216,7 +216,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 	// Separating axis for segment (Gino, p80).
 	// |dot(v, p1 - c)| > dot(|v|, h)
 
-	float32 maxFraction = input.maxFraction;
+	float maxFraction = input.maxFraction;
 
 	// Build a bounding box for the segment.
 	b2AABB segmentAABB;
@@ -226,12 +226,12 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 		segmentAABB.upperBound = b2Max(p1, t);
 	}
 
-	b2GrowableStack<int32, 256> stack;
+	b2GrowableStack<int, 256> stack;
 	stack.Push(m_root);
 
 	while (stack.GetCount() > 0)
 	{
-		int32 nodeId = stack.Pop();
+		int nodeId = stack.Pop();
 		if (nodeId == b2_nullNode)
 		{
 			continue;
@@ -248,7 +248,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 		// |dot(v, p1 - c)| > dot(|v|, h)
 		b2Vec2 c = node->aabb.GetCenter();
 		b2Vec2 h = node->aabb.GetExtents();
-		float32 separation = b2Abs(b2Dot(v, p1 - c)) - b2Dot(abs_v, h);
+		float separation = b2Abs(b2Dot(v, p1 - c)) - b2Dot(abs_v, h);
 		if (separation > 0.0f)
 		{
 			continue;
@@ -261,7 +261,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 			subInput.p2 = input.p2;
 			subInput.maxFraction = maxFraction;
 
-			float32 value = callback->RayCastCallback(subInput, nodeId);
+			float value = callback->RayCastCallback(subInput, nodeId);
 
 			if (value == 0.0f)
 			{

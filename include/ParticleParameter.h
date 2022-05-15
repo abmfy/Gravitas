@@ -131,7 +131,7 @@ public:
 	bool GetRestartOnChange() const { return m_restartOnChange; }
 
 	// Find index by value falling back to -1 if the value isn't found.
-	int32 FindIndexByValue(uint32 value) const;
+	int FindIndexByValue(uint32 value) const;
 
 protected:
 	// Find the value of the current parameter.

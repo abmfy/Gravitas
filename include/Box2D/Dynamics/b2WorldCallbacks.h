@@ -61,7 +61,7 @@ public:
 	/// b2ParticleSystem::GetUserDataBuffer() or
 	/// b2ParticleSystem::GetParticleHandleFromIndex() to determine which
 	/// particle has been destroyed.
-	virtual void SayGoodbye(b2ParticleSystem* particleSystem, int32 index) {
+	virtual void SayGoodbye(b2ParticleSystem* particleSystem, int index) {
 		B2_NOT_USED(particleSystem);
 		B2_NOT_USED(index);
 	}
@@ -83,7 +83,7 @@ public:
 	/// b2_fixtureContactListenerParticle flag is set on the particle.
 	virtual bool ShouldCollide(b2Fixture* fixture,
 							   b2ParticleSystem* particleSystem,
-							   int32 particleIndex)
+							   int particleIndex)
 	{
 		B2_NOT_USED(fixture);
 		B2_NOT_USED(particleIndex);
@@ -95,7 +95,7 @@ public:
 	/// particles.  This is only called if the
 	/// b2_particleContactListenerParticle flag is set on the particle.
 	virtual bool ShouldCollide(b2ParticleSystem* particleSystem,
-							   int32 particleIndexA, int32 particleIndexB)
+							   int particleIndexA, int particleIndexB)
 	{
 		B2_NOT_USED(particleSystem);
 		B2_NOT_USED(particleIndexA);
@@ -109,9 +109,9 @@ public:
 /// match up one-to-one with the contact points in b2Manifold.
 struct b2ContactImpulse
 {
-	float32 normalImpulses[b2_maxManifoldPoints];
-	float32 tangentImpulses[b2_maxManifoldPoints];
-	int32 count;
+	float normalImpulses[b2_maxManifoldPoints];
+	float tangentImpulses[b2_maxManifoldPoints];
+	int count;
 };
 
 /// Implement this class to get contact information. You can use these results for
@@ -146,7 +146,7 @@ public:
 	/// Called when a fixture and particle stop touching if the
 	/// b2_fixtureContactFilterParticle flag is set on the particle.
 	virtual void EndContact(b2Fixture* fixture,
-							b2ParticleSystem* particleSystem, int32 index)
+							b2ParticleSystem* particleSystem, int index)
 	{
 		B2_NOT_USED(fixture);
 		B2_NOT_USED(particleSystem);
@@ -165,7 +165,7 @@ public:
 	/// Called when two particles start touching if
 	/// b2_particleContactFilterParticle flag is set on either particle.
 	virtual void EndContact(b2ParticleSystem* particleSystem,
-							int32 indexA, int32 indexB)
+							int indexA, int indexB)
 	{
 		B2_NOT_USED(particleSystem);
 		B2_NOT_USED(indexA);
@@ -215,7 +215,7 @@ public:
 	/// Called for each particle found in the query AABB.
 	/// @return false to terminate the query.
 	virtual bool ReportParticle(const b2ParticleSystem* particleSystem,
-								int32 index)
+								int index)
 	{
 		B2_NOT_USED(particleSystem);
 		B2_NOT_USED(index);
@@ -252,8 +252,8 @@ public:
 	/// @param normal the normal vector at the point of intersection
 	/// @return -1 to filter, 0 to terminate, fraction to clip the ray for
 	/// closest hit, 1 to continue
-	virtual float32 ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
-									const b2Vec2& normal, float32 fraction) = 0;
+	virtual float ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
+									const b2Vec2& normal, float fraction) = 0;
 
 	/// Called for each particle found in the query. You control how the ray
 	/// cast proceeds by returning a float:
@@ -270,9 +270,9 @@ public:
 	///   b2World::RayCast.
 	/// @return <=0 to ignore rest of particle system, fraction to ignore
 	/// particles that are farther away.
-	virtual float32 ReportParticle(const b2ParticleSystem* particleSystem,
-								   int32 index, const b2Vec2& point,
-								   const b2Vec2& normal, float32 fraction)
+	virtual float ReportParticle(const b2ParticleSystem* particleSystem,
+								   int index, const b2Vec2& point,
+								   const b2Vec2& normal, float fraction)
 	{
 		B2_NOT_USED(particleSystem);
 		B2_NOT_USED(index);

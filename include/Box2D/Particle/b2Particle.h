@@ -129,7 +129,7 @@ public:
 
 	/// Multiplies r, g, b, a members by s where s is a value between 0.0
 	/// and 1.0.
-	b2ParticleColor& operator *= (float32 s)
+	b2ParticleColor& operator *= (float s)
 	{
 		Set((uint8)(r * s), (uint8)(g * s), (uint8)(b * s), (uint8)(a * s));
 		return *this;
@@ -139,16 +139,16 @@ public:
 	b2ParticleColor& operator *= (uint8 s)
 	{
 		// 1..256 to maintain the complete dynamic range.
-		const int32 scale = (int32)s + 1;
-		Set((uint8)(((int32)r * scale) >> k_bitsPerComponent),
-			(uint8)(((int32)g * scale) >> k_bitsPerComponent),
-			(uint8)(((int32)b * scale) >> k_bitsPerComponent),
-			(uint8)(((int32)a * scale) >> k_bitsPerComponent));
+		const int scale = (int)s + 1;
+		Set((uint8)(((int)r * scale) >> k_bitsPerComponent),
+			(uint8)(((int)g * scale) >> k_bitsPerComponent),
+			(uint8)(((int)b * scale) >> k_bitsPerComponent),
+			(uint8)(((int)a * scale) >> k_bitsPerComponent));
 		return *this;
 	}
 
 	/// Scales r, g, b, a members by s returning the modified b2ParticleColor.
-	b2ParticleColor operator * (float32 s) const
+	b2ParticleColor operator * (float s) const
 	{
 		return MultiplyByScalar(s);
 	}
@@ -210,7 +210,7 @@ public:
 	/// strength is 0..128 where 0 results in no color mixing and 128 results
 	/// in an equal mix of both colors.  strength 0..128 is analogous to an
 	/// alpha channel value between 0.0f..0.5f.
-	b2Inline void Mix(b2ParticleColor * const mixColor, const int32 strength)
+	b2Inline void Mix(b2ParticleColor * const mixColor, const int strength)
 	{
 		MixColors(this, mixColor, strength);
 	}
@@ -222,7 +222,7 @@ public:
 	/// alpha channel value between 0.0f..0.5f.
 	static b2Inline void MixColors(b2ParticleColor * const colorA,
 							 b2ParticleColor * const colorB,
-							 const int32 strength)
+							 const int strength)
 	{
 		const uint8 dr = (uint8)((strength * (colorB->r - colorA->r)) >>
 								 k_bitsPerComponent);
@@ -258,9 +258,9 @@ public:
 
 protected:
 	/// Maximum value of a b2ParticleColor component.
-	static const float32 k_maxValue;
+	static const float k_maxValue;
 	/// 1.0 / k_maxValue.
-	static const float32 k_inverseMaxValue;
+	static const float k_inverseMaxValue;
 	/// Number of bits used to store each b2ParticleColor component.
 	static const uint8 k_bitsPerComponent;
 };
@@ -308,7 +308,7 @@ struct b2ParticleDef
 
 	/// Lifetime of the particle in seconds.  A value <= 0.0f indicates a
 	/// particle with infinite lifetime.
-	float32 lifetime;
+	float lifetime;
 
 	/// Use this to store application-specific body data.
 	void* userData;
@@ -319,8 +319,8 @@ struct b2ParticleDef
 };
 
 /// A helper function to calculate the optimal number of iterations.
-int32 b2CalculateParticleIterations(
-	float32 gravity, float32 radius, float32 timeStep);
+int b2CalculateParticleIterations(
+	float gravity, float radius, float timeStep);
 
 /// Handle to a particle. Particle indices are ephemeral: the same index might
 /// refer to a different particle, from frame-to-frame. If you need to keep a
@@ -340,15 +340,15 @@ public:
 	~b2ParticleHandle() { }
 
 	/// Get the index of the particle associated with this handle.
-	int32 GetIndex() const { return m_index; }
+	int GetIndex() const { return m_index; }
 
 private:
 	/// Set the index of the particle associated with this handle.
-	void SetIndex(int32 index) { m_index = index; }
+	void SetIndex(int index) { m_index = index; }
 
 private:
 	// Index of the particle within the particle system.
-	int32 m_index;
+	int m_index;
 };
 
 #if LIQUIDFUN_EXTERNAL_LANGUAGE_API

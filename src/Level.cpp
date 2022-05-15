@@ -18,7 +18,7 @@ void DestructionListener::SayGoodbye(b2ParticleGroup* group) {
 	level->ParticleGroupDestroyed(group);
 }
 
-void DestructionListener::SayGoodbye(b2ParticleSystem *system, int32 index) {
+void DestructionListener::SayGoodbye(b2ParticleSystem *system, int index) {
     level->score++;
 }
 
@@ -37,7 +37,7 @@ const uint32 Level::k_ParticleColorsCount =
 
 Level::Level() {
 	const b2ParticleSystemDef particleSystemDef;
-	b2Vec2 gravity {0, -static_cast<float32>(gravityIntensity)};
+	b2Vec2 gravity {0, -static_cast<float>(gravityIntensity)};
 	gravity.Set(0, -gravityIntensity);
 	m_world = new b2World(gravity);
 	m_particleSystem = m_world->CreateParticleSystem(&particleSystemDef);
@@ -97,7 +97,7 @@ void Level::PreSolve(b2Contact* contact, const b2Manifold* oldManifold) {
 	b2WorldManifold worldManifold;
 	contact->GetWorldManifold(&worldManifold);
 
-	for (int32 i = 0; i < manifold->pointCount && m_pointCount < k_maxContactPoints; ++i)
+	for (int i = 0; i < manifold->pointCount && m_pointCount < k_maxContactPoints; ++i)
 	{
 		ContactPoint* cp = m_points + m_pointCount;
 		cp->fixtureA = fixtureA;
@@ -158,7 +158,7 @@ public:
 		return false;
 	}
 
-	bool ReportParticle(const b2ParticleSystem* particleSystem, int32 index) {
+	bool ReportParticle(const b2ParticleSystem* particleSystem, int index) {
 		if (particleSystem != m_particleSystem)
 			return false;
 
@@ -257,7 +257,7 @@ void Level::MouseMove(const b2Vec2& p)
 }
 
 void Level::Step(Settings* settings) {
-	float32 timeStep = settings->hz > 0.0f ? 1.0f / settings->hz : float32(0.0f);
+	float timeStep = settings->hz > 0.0f ? 1.0f / settings->hz : float(0.0f);
 
 	if (settings->pause) {
 		if (settings->singleStep) {
@@ -300,23 +300,23 @@ void Level::Step(Settings* settings) {
 	}
 
 	if (settings->drawStats) {
-		int32 bodyCount = m_world->GetBodyCount();
-		int32 contactCount = m_world->GetContactCount();
-		int32 jointCount = m_world->GetJointCount();
+		int bodyCount = m_world->GetBodyCount();
+		int contactCount = m_world->GetContactCount();
+		int jointCount = m_world->GetJointCount();
 		m_debugDraw.DrawString(5, m_textLine, "bodies/contacts/joints = %d/%d/%d", bodyCount, contactCount, jointCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		int32 particleCount = m_particleSystem->GetParticleCount();
-		int32 groupCount = m_particleSystem->GetParticleGroupCount();
-		int32 pairCount = m_particleSystem->GetPairCount();
-		int32 triadCount = m_particleSystem->GetTriadCount();
+		int particleCount = m_particleSystem->GetParticleCount();
+		int groupCount = m_particleSystem->GetParticleGroupCount();
+		int pairCount = m_particleSystem->GetPairCount();
+		int triadCount = m_particleSystem->GetTriadCount();
 		m_debugDraw.DrawString(5, m_textLine, "particles/groups/pairs/triads = %d/%d/%d/%d", particleCount, groupCount, pairCount, triadCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		int32 proxyCount = m_world->GetProxyCount();
-		int32 height = m_world->GetTreeHeight();
-		int32 balance = m_world->GetTreeBalance();
-		float32 quality = m_world->GetTreeQuality();
+		int proxyCount = m_world->GetProxyCount();
+		int height = m_world->GetTreeHeight();
+		int balance = m_world->GetTreeBalance();
+		float quality = m_world->GetTreeQuality();
 		m_debugDraw.DrawString(5, m_textLine, "proxies/height/balance/quality = %d/%d/%d/%g", proxyCount, height, balance, quality);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
@@ -349,7 +349,7 @@ void Level::Step(Settings* settings) {
 		b2Profile aveProfile;
 		memset(&aveProfile, 0, sizeof(b2Profile));
 		if (m_stepCount > 0) {
-			float32 scale {1.0f / m_stepCount};
+			float scale {1.0f / m_stepCount};
 			aveProfile.step = scale * m_totalProfile.step;
 			aveProfile.collide = scale * m_totalProfile.collide;
 			aveProfile.solve = scale * m_totalProfile.solve;
@@ -379,7 +379,7 @@ void Level::Step(Settings* settings) {
 	}
 
 	if (m_mouseTracing && !m_mouseJoint) {
-		float32 delay = {0.1};
+		float delay = {0.1};
 		b2Vec2 acceleration = 2 / delay * (1 / delay * (m_mouseWorld - m_mouseTracerPosition) - m_mouseTracerVelocity);
 		m_mouseTracerVelocity += timeStep * acceleration;
 		m_mouseTracerPosition += timeStep * m_mouseTracerVelocity;
@@ -417,10 +417,10 @@ void Level::Step(Settings* settings) {
 	}
 
 	if (settings->drawContactPoints) {
-		const float32 k_impulseScale = 0.1f;
-		const float32 k_axisScale = 0.3f;
+		const float k_impulseScale = 0.1f;
+		const float k_axisScale = 0.3f;
 
-		for (int32 i = 0; i < m_pointCount; ++i)
+		for (int i = 0; i < m_pointCount; ++i)
 		{
 			ContactPoint* point = m_points + i;
 
@@ -493,7 +493,7 @@ void Level::ShiftOrigin(const b2Vec2& newOrigin)
 	m_world->ShiftOrigin(newOrigin);
 }
 
-float32 Level::GetDefaultViewZoom() const {
+float Level::GetDefaultViewZoom() const {
 	return 1;
 }
 
@@ -507,10 +507,10 @@ void Level::ColorParticleGroup(b2ParticleGroup * const group,
 {
 	b2Assert(group);
 	b2ParticleColor * const colorBuffer = m_particleSystem->GetColorBuffer();
-	const int32 particleCount = group->GetParticleCount();
-	const int32 groupStart = group->GetBufferIndex();
-	const int32 groupEnd = particleCount + groupStart;
-	const int32 colorCount = (int32)k_ParticleColorsCount;
+	const int particleCount = group->GetParticleCount();
+	const int groupStart = group->GetBufferIndex();
+	const int groupEnd = particleCount + groupStart;
+	const int colorCount = (int)k_ParticleColorsCount;
 	if (!particlesPerColor)
 	{
 		particlesPerColor = particleCount / colorCount;
@@ -519,7 +519,7 @@ void Level::ColorParticleGroup(b2ParticleGroup * const group,
 			particlesPerColor = 1;
 		}
 	}
-	for (int32 i = groupStart; i < groupEnd; i++)
+	for (int i = groupStart; i < groupEnd; i++)
 	{
 		colorBuffer[i] = k_ParticleColors[i / particlesPerColor];
 	}

@@ -32,11 +32,11 @@ struct b2VelocityConstraintPoint
 {
 	b2Vec2 rA;
 	b2Vec2 rB;
-	float32 normalImpulse;
-	float32 tangentImpulse;
-	float32 normalMass;
-	float32 tangentMass;
-	float32 velocityBias;
+	float normalImpulse;
+	float tangentImpulse;
+	float normalMass;
+	float tangentMass;
+	float velocityBias;
 };
 
 struct b2ContactVelocityConstraint
@@ -45,22 +45,22 @@ struct b2ContactVelocityConstraint
 	b2Vec2 normal;
 	b2Mat22 normalMass;
 	b2Mat22 K;
-	int32 indexA;
-	int32 indexB;
-	float32 invMassA, invMassB;
-	float32 invIA, invIB;
-	float32 friction;
-	float32 restitution;
-	float32 tangentSpeed;
-	int32 pointCount;
-	int32 contactIndex;
+	int indexA;
+	int indexB;
+	float invMassA, invMassB;
+	float invIA, invIB;
+	float friction;
+	float restitution;
+	float tangentSpeed;
+	int pointCount;
+	int contactIndex;
 };
 
 struct b2ContactSolverDef
 {
 	b2TimeStep step;
 	b2Contact** contacts;
-	int32 count;
+	int count;
 	b2Position* positions;
 	b2Velocity* velocities;
 	b2StackAllocator* allocator;
@@ -79,7 +79,7 @@ public:
 	void StoreImpulses();
 
 	bool SolvePositionConstraints();
-	bool SolveTOIPositionConstraints(int32 toiIndexA, int32 toiIndexB);
+	bool SolveTOIPositionConstraints(int toiIndexA, int toiIndexB);
 
 	b2TimeStep m_step;
 	b2Position* m_positions;

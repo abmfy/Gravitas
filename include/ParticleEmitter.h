@@ -21,6 +21,8 @@
 #include <math.h>
 #include <set>
 
+#include "Box2D/Box2D.h"
+
 // Callback used to notify the user of created particles.
 class EmittedParticleCallback {
 public:
@@ -29,7 +31,7 @@ public:
 
 	// Called for each created particle.
 	virtual void ParticleCreated(b2ParticleSystem * const system,
-								 const int32 particleIndex) = 0;
+								 const int particleIndex) = 0;
 };
 
 // Emit particles from a circular region.
@@ -86,14 +88,14 @@ public:
 
 	// Set the speed of particles along the direction from the center of
 	// the emitter.
-	void SetSpeed(const float32 speed)
+	void SetSpeed(const float speed)
 	{
 		m_speed = speed;
 	}
 
 	// Get the speed of particles along the direction from the center of
 	// the emitter.
-	float32 GetSpeed() const
+	float GetSpeed() const
 	{
 		return m_speed;
 	}
@@ -123,13 +125,13 @@ public:
 	}
 
 	// Set the emit rate in particles per second.
-	void SetEmitRate(const float32 emitRate)
+	void SetEmitRate(const float emitRate)
 	{
 		m_emitRate = emitRate;
 	}
 
 	// Get the current emit rate.
-	float32 GetEmitRate() const
+	float GetEmitRate() const
 	{
 		return m_emitRate;
 	}
@@ -188,11 +190,11 @@ public:
 	// particleIndicesCount is the size of the particleIndices array.
 	// This function returns the number of particles created during this
 	// simulation step.
-	int32 Step(const float32 dt, int32* const particleIndices,
-			   const int32 particleIndicesCount)
+	int Step(const float dt, int* const particleIndices,
+			   const int particleIndicesCount)
 	{
 		b2Assert(m_particleSystem);
-		int32 numberOfParticlesCreated = 0;
+		int numberOfParticlesCreated = 0;
 		// How many (fractional) particles should we have emitted this frame?
 		m_emitRemainder += m_emitRate * dt;
 
@@ -207,9 +209,9 @@ public:
 			m_emitRemainder -= 1.0f;
 
 			// Randomly pick a position within the emitter's radius.
-			const float32 angle = Random() * 2.0f * b2_pi;
+			const float angle = Random() * 2.0f * b2_pi;
 			// Distance from the center of the circle.
-			const float32 distance = Random();
+			const float distance = Random();
 			b2Vec2 positionOnUnitCircle(sin(angle), cos(angle));
 
 			// Initial position.
@@ -223,7 +225,7 @@ public:
 				pd.velocity += positionOnUnitCircle * m_speed;
 			}
 
-			const int32 particleIndex = m_particleSystem->CreateParticle(pd);
+			const int particleIndex = m_particleSystem->CreateParticle(pd);
 			if (m_callback)
 			{
 				m_callback->ParticleCreated(m_particleSystem, particleIndex);
@@ -240,9 +242,9 @@ public:
 
 private:
 	// Calculate a random number 0.0f..1.0f.
-	static float32 Random()
+	static float Random()
 	{
-		return ((float32)rand() / (float32)RAND_MAX);
+		return ((float)rand() / (float)RAND_MAX);
 	}
 
 private:
@@ -255,15 +257,15 @@ private:
 	// Launch direction.
 	b2Vec2 m_startingVelocity;
 	// Speed particles are emitted
-	float32 m_speed;
+	float m_speed;
 	// Half width / height of particle emitter
 	b2Vec2 m_halfSize;
 	// Particles per second
-	float32 m_emitRate;
+	float m_emitRate;
 	// Initial color of particle emitted.
 	b2ParticleColor m_color;
 	// Number particles to emit on the next frame
-	float32 m_emitRemainder;
+	float m_emitRemainder;
 	// Flags for created particles, see b2ParticleFlag.
 	uint32 m_flags;
 	// Group to put newly created particles in.

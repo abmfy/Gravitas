@@ -49,8 +49,8 @@ public:
 
 	// Process mouse events and perform arrow selection returning the
 	// ID of the selected arrow if it has been clicked.
-	uint32 Mouse(const int32 button, const int32 state,
-				 const int32 previousState, const b2Vec2 &mousePosition);
+	uint32 Mouse(const int button, const int state,
+				 const int previousState, const b2Vec2 &mousePosition);
 
 	// Get the currently selected arrow.
 	uint32 GetSelection() const { return m_selection; }
@@ -89,23 +89,23 @@ private:
 	// Whether particle parameters are enabled.
 	bool m_particleParameterSelectionEnabled;
 	// Ratio of width to height.
-	float32 m_aspectRatio;
+	float m_aspectRatio;
 
 	// Whether the full screen UI is enabled by default.
 	static const bool k_enabledDefault;
 	// Default scaling factor for an arrow (see m_scale).
-	static const float32 k_arrowScale;
+	static const float k_arrowScale;
 	// Scaling factor for a small arrow (see m_scale).
-	static const float32 k_arrowScaleSmall;
+	static const float k_arrowScaleSmall;
 	// Spacing between arrows and the edge of the screen.  For the scale of
 	// this coordinate system see Arrow::m_position.
-	static const float32 k_arrowSpacing;
+	static const float k_arrowSpacing;
 	// Location test change arrows are placed relative to the left / right
 	// borders of the viewport.
-	static const float32 k_arrowTestX;
+	static const float k_arrowTestX;
 	// Location particle parameter arrows are placed relative to the
 	// left / right borders of the viewport.
-	static const float32 k_arrowParticleParameterX;
+	static const float k_arrowParticleParameterX;
 	// Arrows to draw on the screen.
 	static Arrow s_arrows[];
 	// Number of arrows in s_arrows, since s_arrows is an incomplete type

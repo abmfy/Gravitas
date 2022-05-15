@@ -36,7 +36,7 @@ public:
 	// m_extents for a description of this function's arguments.
 	// "viewCenter" and "extents" are directly referenced by this object so
 	// must be present for the lifetime of this object.
-	Arrow(const float32 angle, const float32 scale,
+	Arrow(const float angle, const float scale,
 		  const b2Vec2 &position, const uint32 identifier,
 		  const b2Vec2 *viewCenter, const b2Vec2 *extents);
 
@@ -62,7 +62,7 @@ public:
 protected:
 	// Calculate the scaling factor for the arrow given the current
 	// viewport extents.
-	float32 CalculateScale() const;
+	float CalculateScale() const;
 
 	// Calculate the viewport position of the arrow.
 	b2Vec2* CalculateViewportPosition(
@@ -74,16 +74,16 @@ protected:
 	// area (3.5f, 3.5f) (see Arrow::k_size) and the overall bounding box
 	// of the arrow is (-1.75f, -1.75f) to (1.75f, 1.75f).
 	static void DrawArrow(
-		const b2Color& color, const float32 angle, const float32 scale,
+		const b2Color& color, const float angle, const float scale,
 		const b2Vec2 &position);
 
 private:
 	// Angle of rotation of the arrow in degrees.
-	float32 m_angle;
+	float m_angle;
 	// Scaling factor for the arrow rendered by DebugDraw::DrawArrow().
 	// 0.0f is an infinitely small arrow and 1.0f is an arrow that fills
 	// the screen.
-	float32 m_scale;
+	float m_scale;
 	// Location of the arrow relative to the center of the view where
 	// (0.0f, 0.0f) is the center of the view, (-1.0f, -1.0f) is the
 	// bottom left corner of the view and (1.0f, 1.0f) is the top right
@@ -100,7 +100,7 @@ private:
 public:
 	// Maximum size of the in world units rendered by
 	// DebugDraw::DrawArrow().
-	static const float32 k_size;
+	static const float k_size;
 
 private:
 	// Active (clicked / pressed) color of an arrow.

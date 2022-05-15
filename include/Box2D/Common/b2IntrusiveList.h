@@ -353,14 +353,14 @@ public:
 
 private:
 	// Get the offset of m_node within this class.
-	static int32 GetNodeOffset(b2IntrusiveListNode* const node)
+	static int GetNodeOffset(b2IntrusiveListNode* const node)
 	{
 		b2Assert(node);
 		// Perform some type punning to calculate the offset of m_node in T.
 		// WARNING: This could result in undefined behavior with some C++
 		// compilers.
 		T* obj = (T*)node;
-		int32 nodeOffset = (int32)((uint8*)&obj->m_node - (uint8*)obj);
+		int nodeOffset = (int)((uint8*)&obj->m_node - (uint8*)obj);
 		return nodeOffset;
 	}
 };

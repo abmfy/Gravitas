@@ -35,48 +35,48 @@ public:
 	b2Shape* Clone(b2BlockAllocator* allocator) const;
 
 	/// @see b2Shape::GetChildCount
-	int32 GetChildCount() const;
+	int GetChildCount() const;
 
 	/// Create a convex hull from the given array of local points.
 	/// The count must be in the range [3, b2_maxPolygonVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
-	void Set(const b2Vec2* points, int32 count);
+	void Set(const b2Vec2* points, int count);
 
 	/// Build vertices to represent an axis-aligned box centered on the local origin.
 	/// @param hx the half-width.
 	/// @param hy the half-height.
-	void SetAsBox(float32 hx, float32 hy);
+	void SetAsBox(float hx, float hy);
 
 	/// Build vertices to represent an oriented box.
 	/// @param hx the half-width.
 	/// @param hy the half-height.
 	/// @param center the center of the box in local coordinates.
 	/// @param angle the rotation of the box in local coordinates.
-	void SetAsBox(float32 hx, float32 hy, const b2Vec2& center, float32 angle);
+	void SetAsBox(float hx, float hy, const b2Vec2& center, float angle);
 
 	/// @see b2Shape::TestPoint
 	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const;
 
 	// @see b2Shape::ComputeDistance
-	void ComputeDistance(const b2Transform& xf, const b2Vec2& p, float32* distance, b2Vec2* normal, int32 childIndex) const;
+	void ComputeDistance(const b2Transform& xf, const b2Vec2& p, float* distance, b2Vec2* normal, int childIndex) const;
 
 	/// Implement b2Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-					const b2Transform& transform, int32 childIndex) const;
+					const b2Transform& transform, int childIndex) const;
 
 	/// @see b2Shape::ComputeAABB
-	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, int32 childIndex) const;
+	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, int childIndex) const;
 
 	/// @see b2Shape::ComputeMass
-	void ComputeMass(b2MassData* massData, float32 density) const;
+	void ComputeMass(b2MassData* massData, float density) const;
 
 	/// Get the vertex count.
-	int32 GetVertexCount() const { return m_count; }
+	int GetVertexCount() const { return m_count; }
 
 	/// Get a vertex by index.
-	const b2Vec2& GetVertex(int32 index) const;
+	const b2Vec2& GetVertex(int index) const;
 
 	/// Validate convexity. This is a very time consuming operation.
 	/// @returns true if valid
@@ -85,21 +85,21 @@ public:
 #if LIQUIDFUN_EXTERNAL_LANGUAGE_API
 public:
 	/// Set centroid with direct floats.
-	void SetCentroid(float32 x, float32 y);
+	void SetCentroid(float x, float y);
 
 	/// SetAsBox with direct floats for center.
 	/// @see b2Shape::SetAsBox
-	void SetAsBox(float32 hx,
-								float32 hy,
-								float32 centerX,
-								float32 centerY,
-								float32 angle);
+	void SetAsBox(float hx,
+								float hy,
+								float centerX,
+								float centerY,
+								float angle);
 #endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
 
 	b2Vec2 m_centroid;
 	b2Vec2 m_vertices[b2_maxPolygonVertices];
 	b2Vec2 m_normals[b2_maxPolygonVertices];
-	int32 m_count;
+	int m_count;
 };
 
 inline b2PolygonShape::b2PolygonShape()
@@ -110,23 +110,23 @@ inline b2PolygonShape::b2PolygonShape()
 	m_centroid.SetZero();
 }
 
-inline const b2Vec2& b2PolygonShape::GetVertex(int32 index) const
+inline const b2Vec2& b2PolygonShape::GetVertex(int index) const
 {
 	b2Assert(0 <= index && index < m_count);
 	return m_vertices[index];
 }
 
 #if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-inline void b2PolygonShape::SetCentroid(float32 x, float32 y)
+inline void b2PolygonShape::SetCentroid(float x, float y)
 {
 	m_centroid.Set(x, y);
 }
 
-inline void b2PolygonShape::SetAsBox(float32 hx,
-										 float32 hy,
-										 float32 centerX,
-										 float32 centerY,
-										 float32 angle) {
+inline void b2PolygonShape::SetAsBox(float hx,
+										 float hy,
+										 float centerX,
+										 float centerY,
+										 float angle) {
 	SetAsBox(hx, hy, b2Vec2(centerX, centerY), angle);
 }
 #endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API

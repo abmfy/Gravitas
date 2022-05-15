@@ -37,28 +37,28 @@ public:
 	b2Shape* Clone(b2BlockAllocator* allocator) const;
 
 	/// @see b2Shape::GetChildCount
-	int32 GetChildCount() const;
+	int GetChildCount() const;
 
 	/// @see b2Shape::TestPoint
 	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const;
 
 	// @see b2Shape::ComputeDistance
-	void ComputeDistance(const b2Transform& xf, const b2Vec2& p, float32* distance, b2Vec2* normal, int32 childIndex) const;
+	void ComputeDistance(const b2Transform& xf, const b2Vec2& p, float* distance, b2Vec2* normal, int childIndex) const;
 
 	/// Implement b2Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-				const b2Transform& transform, int32 childIndex) const;
+				const b2Transform& transform, int childIndex) const;
 
 	/// @see b2Shape::ComputeAABB
-	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, int32 childIndex) const;
+	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, int childIndex) const;
 
 	/// @see b2Shape::ComputeMass
-	void ComputeMass(b2MassData* massData, float32 density) const;
+	void ComputeMass(b2MassData* massData, float density) const;
 
 #if LIQUIDFUN_EXTERNAL_LANGUAGE_API
 public:
 	/// Set this as an isolated edge, with direct floats.
-	void Set(float32 vx1, float32 vy1, float32 vx2, float32 vy2);
+	void Set(float vx1, float vy1, float vx2, float vy2);
 #endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
 
 	/// These are the edge vertices
@@ -82,10 +82,10 @@ inline b2EdgeShape::b2EdgeShape()
 }
 
 #if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-inline void b2EdgeShape::Set(float32 vx1,
-														 float32 vy1,
-														 float32 vx2,
-														 float32 vy2) {
+inline void b2EdgeShape::Set(float vx1,
+														 float vy1,
+														 float vx2,
+														 float vy2) {
 	Set(b2Vec2(vx1, vy1), b2Vec2(vx2, vy2));
 }
 #endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API

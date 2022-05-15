@@ -73,7 +73,7 @@ public:
 		return data[count++];
 	}
 
-	void Reserve(int32 newCapacity)
+	void Reserve(int newCapacity)
 	{
 		if (capacity >= newCapacity)
 			return;
@@ -94,7 +94,7 @@ public:
 	void Grow()
 	{
 		// Double the capacity.
-		int32 newCapacity = capacity ? 2 * capacity
+		int newCapacity = capacity ? 2 * capacity
 						  : b2_minParticleSystemBufferCapacity;
 		b2Assert(newCapacity > capacity);
 		Reserve(newCapacity);
@@ -114,7 +114,7 @@ public:
 	void Shorten(const T* newEnd)
 	{
 		b2Assert(newEnd >= data);
-		count = (int32) (newEnd - data);
+		count = (int) (newEnd - data);
 	}
 
 	T& operator[](int i)
@@ -157,18 +157,18 @@ public:
 		return &data[count];
 	}
 
-	int32 GetCount() const
+	int GetCount() const
 	{
 		return count;
 	}
 
-	void SetCount(int32 newCount)
+	void SetCount(int newCount)
 	{
 		b2Assert(0 <= newCount && newCount <= capacity);
 		count = newCount;
 	}
 
-	int32 GetCapacity() const
+	int GetCapacity() const
 	{
 		return capacity;
 	}
@@ -191,8 +191,8 @@ public:
 
 private:
 	T* data;
-	int32 count;
-	int32 capacity;
+	int count;
+	int capacity;
 	b2BlockAllocator* allocator;
 };
 

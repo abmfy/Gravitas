@@ -22,7 +22,7 @@
 #include <Box2D/Common/b2Settings.h>
 
 /// Alignment (in bytes) of user memory associated with b2TrackedBlock.
-const int32 b2_mallocAlignment = 32;
+const int b2_mallocAlignment = 32;
 
 /// Allocated block of memory that can be tracked in a b2IntrusiveList.
 class b2TrackedBlock : public b2TypedIntrusiveListNode<b2TrackedBlock>

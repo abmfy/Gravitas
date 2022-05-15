@@ -20,9 +20,9 @@
 #ifndef B2_SETTINGS_H
 #define B2_SETTINGS_H
 
-#include <stddef.h>
-#include <assert.h>
-#include <float.h>
+#include <cstddef>
+#include <cassert>
+#include <cfloat>
 
 #define B2_NOT_USED(x) ((void)(x))
 #if DEBUG && !defined(NDEBUG)
@@ -43,22 +43,12 @@
 // Calculate the size of a static array.
 #define B2_ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
-typedef signed char	int8;
-typedef signed short int16;
-typedef signed int int32;
-typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef unsigned int uint32;
-typedef float float32;
-typedef double float64;
+using uint8 = unsigned char;
+using uint16 = unsigned short;
+using uint32 = unsigned int;
 
-#ifdef WIN32
-typedef __int64   int64;
-typedef unsigned __int64   uint64;
-#else // !WIN32
-typedef long long int64;
-typedef unsigned long long uint64;
-#endif
+using int64 = long long;
+using uint64 = unsigned long long;
 
 #define	b2_maxFloat		FLT_MAX
 #define	b2_epsilon		FLT_EPSILON
@@ -71,16 +61,6 @@ typedef unsigned long long uint64;
 #define b2Inline inline
 #endif // defined(__GNUC__)
 #endif // !defined(b2Inline)
-
-// We expand the API so that other languages (e.g. Java) can call into
-// our C++ more easily. Only set if when the flag is not externally defined.
-#if !defined(LIQUIDFUN_EXTERNAL_LANGUAGE_API)
-#if SWIG || LIQUIDFUN_UNIT_TESTS
-#define LIQUIDFUN_EXTERNAL_LANGUAGE_API 1
-#else
-#define LIQUIDFUN_EXTERNAL_LANGUAGE_API 0
-#endif
-#endif
 
 /// @file
 /// Global tuning constants based on meters-kilograms-seconds (MKS) units.
@@ -210,13 +190,13 @@ typedef unsigned long long uint64;
 // Memory Allocation
 
 /// Implement this function to use your own memory allocator.
-void* b2Alloc(int32 size);
+void* b2Alloc(int size);
 
 /// If you implement b2Alloc, you should also implement this function.
 void b2Free(void* mem);
 
 /// Use this function to override b2Alloc() without recompiling this library.
-typedef void* (*b2AllocFunction)(int32 size, void* callbackData);
+typedef void* (*b2AllocFunction)(int size, void* callbackData);
 /// Use this function to override b2Free() without recompiling this library.
 typedef void (*b2FreeFunction)(void* mem, void* callbackData);
 
@@ -231,10 +211,10 @@ void b2SetAllocFreeCallbacks(b2AllocFunction allocCallback,
 /// Set the number of calls to b2Alloc minus the number of calls to b2Free.
 /// This can be used to disable the empty heap check in
 /// b2SetAllocFreeCallbacks() which can be useful for testing.
-void b2SetNumAllocs(const int32 numAllocs);
+void b2SetNumAllocs(const int numAllocs);
 
 /// Get number of calls to b2Alloc minus number of calls to b2Free.
-int32 b2GetNumAllocs();
+int b2GetNumAllocs();
 
 /// Logging function.
 void b2Log(const char* string, ...);
@@ -243,9 +223,9 @@ void b2Log(const char* string, ...);
 /// See http://en.wikipedia.org/wiki/Software_versioning
 struct b2Version
 {
-	int32 major;		///< significant changes
-	int32 minor;		///< incremental changes
-	int32 revision;		///< bug fixes
+	int major;		///< significant changes
+	int minor;		///< incremental changes
+	int revision;		///< bug fixes
 };
 
 /// Current version.

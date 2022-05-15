@@ -13,23 +13,23 @@
 namespace TestMain {
 
 namespace {
-	int32 testIndex {};
-	int32 testSelection {};
-	int32 testCount {};
+	int testIndex {};
+	int testSelection {};
+	int testCount {};
 	TestEntry* entry;
 	Level* level;
 	Settings settings;
-	int32 width {640};
-	int32 height {640};
-	int32 framePeriod {16};
-	int32 mainWindow;
+	int width {640};
+	int height {640};
+	int framePeriod {16};
+	int mainWindow;
 	float settingsHz {60};
 	GLUI *glui = nullptr;
-	float32 viewZoom {1};
+	float viewZoom {1};
 	int tx, ty, tw, th;
 	bool rMouseDown {};
 	// State of the mouse on the previous call of Mouse().
-	int32 previousMouseState {-1};
+	int previousMouseState {-1};
 	b2Vec2 lastp;
 	b2Vec2 extents;
 
@@ -49,7 +49,7 @@ void SetRestartOnParticleParameterChange(bool enable) {
 // match one of the values in TestMain::k_particleTypes or one of the values
 // referenced by particleParameterDef passed to SetParticleParameters().
 uint32 SetParticleParameterValue(uint32 value) {
-	const int32 index {particleParameter.FindIndexByValue(value)};
+	const int index {particleParameter.FindIndexByValue(value)};
 	// If the particle type isn't found, so fallback to the first entry in the
 	// parameter.
 	particleParameter.Set(index >= 0 ? index : 0);
@@ -72,7 +72,7 @@ void SetParticleParameters(
 									particleParameterDefCount);
 }
 
-static void Resize(int32 w, int32 h) {
+static void Resize(int w, int h) {
 	width = w;
 	height = h;
 
@@ -81,7 +81,7 @@ static void Resize(int32 w, int32 h) {
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	float32 ratio {th ? float32(tw) / float32(th) : 1};
+	float ratio {th ? float(tw) / float(th) : 1};
 
 	extents = ratio >= 1 ? b2Vec2(ratio * 25.0f, 25.0f) : b2Vec2(25.0f, 25.0f / ratio);
 	extents *= viewZoom;
@@ -97,9 +97,9 @@ static void Resize(int32 w, int32 h) {
 	}
 }
 
-static b2Vec2 ConvertScreenToWorld(int32 x, int32 y) {
-	float32 u = x / float32(tw);
-	float32 v = (th - y) / float32(th);
+static b2Vec2 ConvertScreenToWorld(int x, int y) {
+	float u {x / float(tw)};
+	float v {(th - y) / float(th)};
 
 	b2Vec2 lower = settings.viewCenter - extents;
 	b2Vec2 upper = settings.viewCenter + extents;
@@ -287,7 +287,7 @@ static void KeyboardUp(unsigned char key, int x, int y) {
 	}
 }
 
-static void Mouse(int32 button, int32 state, int32 x, int32 y) {
+static void Mouse(int button, int state, int x, int y) {
 	// Use the mouse to move things around.
 	if (button == GLUT_LEFT_BUTTON) {
 		int mod {glutGetModifiers()};
@@ -336,7 +336,7 @@ static void Mouse(int32 button, int32 state, int32 x, int32 y) {
 	previousMouseState = state;
 }
 
-static void MouseMotion(int32 x, int32 y) {
+static void MouseMotion(int x, int y) {
 	b2Vec2 p = ConvertScreenToWorld(x, y);
 
 	if (fullscreenUI.GetSelection() == FullscreenUI::e_SelectionNone) {

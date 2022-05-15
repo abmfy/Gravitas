@@ -26,7 +26,7 @@ class b2StackQueue
 
 public:
 
-	b2StackQueue(b2StackAllocator *allocator, int32 capacity)
+	b2StackQueue(b2StackAllocator *allocator, int capacity)
 	{
 		m_allocator = allocator;
 		m_buffer = (T*) m_allocator->Allocate(sizeof(T) * capacity);
@@ -44,7 +44,7 @@ public:
 	{
 		if (m_back >= m_capacity)
 		{
-			for (int32 i = m_front; i < m_back; i++)
+			for (int i = m_front; i < m_back; i++)
 			{
 				m_buffer[i - m_front] = m_buffer[i];
 			}
@@ -89,9 +89,9 @@ private:
 
 	b2StackAllocator *m_allocator;
 	T* m_buffer;
-	int32 m_front;
-	int32 m_back;
-	int32 m_capacity;
+	int m_front;
+	int m_back;
+	int m_capacity;
 
 };
 

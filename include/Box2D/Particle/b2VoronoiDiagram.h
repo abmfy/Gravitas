@@ -29,20 +29,20 @@ class b2VoronoiDiagram
 
 public:
 
-	b2VoronoiDiagram(b2StackAllocator* allocator, int32 generatorCapacity);
+	b2VoronoiDiagram(b2StackAllocator* allocator, int generatorCapacity);
 	~b2VoronoiDiagram();
 
 	/// Add a generator.
 	/// @param the position of the generator.
 	/// @param a tag used to identify the generator in callback functions.
 	/// @param whether to callback for nodes associated with the generator.
-	void AddGenerator(const b2Vec2& center, int32 tag, bool necessary);
+	void AddGenerator(const b2Vec2& center, int tag, bool necessary);
 
 	/// Generate the Voronoi diagram. It is rasterized with a given interval
 	/// in the same range as the necessary generators exist.
 	/// @param the interval of the diagram.
 	/// @param margin for which the range of the diagram is extended.
-	void Generate(float32 radius, float32 margin);
+	void Generate(float radius, float margin);
 
 	/// Callback used by GetNodes().
 	class NodeCallback
@@ -50,7 +50,7 @@ public:
 	public:
 		virtual ~NodeCallback() {}
 		/// Receive tags for generators associated with a node.
-		virtual void operator()(int32 a, int32 b, int32 c) = 0;
+		virtual void operator()(int a, int b, int c) = 0;
 	};
 
 	/// Enumerate all nodes that contain at least one necessary generator.
@@ -62,17 +62,17 @@ private:
 	struct Generator
 	{
 		b2Vec2 center;
-		int32 tag;
+		int tag;
 		bool necessary;
 	};
 
 	struct b2VoronoiDiagramTask
 	{
-		int32 m_x, m_y, m_i;
+		int m_x, m_y, m_i;
 		Generator* m_generator;
 
 		b2VoronoiDiagramTask() {}
-		b2VoronoiDiagramTask(int32 x, int32 y, int32 i, Generator* g)
+		b2VoronoiDiagramTask(int x, int y, int i, Generator* g)
 		{
 			m_x = x;
 			m_y = y;
@@ -83,9 +83,9 @@ private:
 
 	b2StackAllocator *m_allocator;
 	Generator* m_generatorBuffer;
-	int32 m_generatorCapacity;
-	int32 m_generatorCount;
-	int32 m_countX, m_countY;
+	int m_generatorCapacity;
+	int m_generatorCount;
+	int m_countX, m_countY;
 	Generator** m_diagram;
 
 };

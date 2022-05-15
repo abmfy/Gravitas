@@ -32,46 +32,46 @@ public:
 	b2Shape* Clone(b2BlockAllocator* allocator) const;
 
 	/// @see b2Shape::GetChildCount
-	int32 GetChildCount() const;
+	int GetChildCount() const;
 
 	/// Implement b2Shape.
 	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const;
 
 	// @see b2Shape::ComputeDistance
-	void ComputeDistance(const b2Transform& xf, const b2Vec2& p, float32* distance, b2Vec2* normal, int32 childIndex) const;
+	void ComputeDistance(const b2Transform& xf, const b2Vec2& p, float* distance, b2Vec2* normal, int childIndex) const;
 
 	/// Implement b2Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-				const b2Transform& transform, int32 childIndex) const;
+				const b2Transform& transform, int childIndex) const;
 
 	/// @see b2Shape::ComputeAABB
-	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, int32 childIndex) const;
+	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, int childIndex) const;
 
 	/// @see b2Shape::ComputeMass
-	void ComputeMass(b2MassData* massData, float32 density) const;
+	void ComputeMass(b2MassData* massData, float density) const;
 
 	/// Get the supporting vertex index in the given direction.
-	int32 GetSupport(const b2Vec2& d) const;
+	int GetSupport(const b2Vec2& d) const;
 
 	/// Get the supporting vertex in the given direction.
 	const b2Vec2& GetSupportVertex(const b2Vec2& d) const;
 
 	/// Get the vertex count.
-	int32 GetVertexCount() const { return 1; }
+	int GetVertexCount() const { return 1; }
 
 	/// Get a vertex by index. Used by b2Distance.
-	const b2Vec2& GetVertex(int32 index) const;
+	const b2Vec2& GetVertex(int index) const;
 
 #if LIQUIDFUN_EXTERNAL_LANGUAGE_API
 public:
 	/// Set position with direct floats.
-	void SetPosition(float32 x, float32 y) { m_p.Set(x, y); }
+	void SetPosition(float x, float y) { m_p.Set(x, y); }
 
 	/// Get x-coordinate of position.
-	float32 GetPositionX() const { return m_p.x; }
+	float GetPositionX() const { return m_p.x; }
 
 	/// Get y-coordinate of position.
-	float32 GetPositionY() const { return m_p.y; }
+	float GetPositionY() const { return m_p.y; }
 #endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
 
 	/// Position
@@ -85,7 +85,7 @@ inline b2CircleShape::b2CircleShape()
 	m_p.SetZero();
 }
 
-inline int32 b2CircleShape::GetSupport(const b2Vec2 &d) const
+inline int b2CircleShape::GetSupport(const b2Vec2 &d) const
 {
 	B2_NOT_USED(d);
 	return 0;
@@ -97,7 +97,7 @@ inline const b2Vec2& b2CircleShape::GetSupportVertex(const b2Vec2 &d) const
 	return m_p;
 }
 
-inline const b2Vec2& b2CircleShape::GetVertex(int32 index) const
+inline const b2Vec2& b2CircleShape::GetVertex(int index) const
 {
 	B2_NOT_USED(index);
 	b2Assert(index == 0);

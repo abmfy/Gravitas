@@ -115,7 +115,7 @@ bool ParticleParameter::Changed(bool * const restart)
 }
 
 // Find index by value falling back to -1 if the value isn't found.
-int32 ParticleParameter::FindIndexByValue(uint32 value) const
+int ParticleParameter::FindIndexByValue(uint32 value) const
 {
 	uint32 index = 0;
 	for (uint32 i = 0; i < m_definitionCount; ++i)

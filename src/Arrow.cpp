@@ -20,14 +20,14 @@
 
 #include "GL/freeglut.h"
 
-const float32 Arrow::k_size = 3.5f;
+const float Arrow::k_size = 3.5f;
 const b2Color Arrow::k_activeColor(0.0f, 1.0f, 0.0f);
 const b2Color Arrow::k_passiveColor(0.5f, 0.5f, 0.5f);
 
 // Construct an arrow.
 // See m_angle, m_scale, m_position, m_identifier, m_viewCenter and
 // m_extents for a description of this function's arguments.
-Arrow::Arrow(const float32 angle, const float32 scale,
+Arrow::Arrow(const float angle, const float scale,
 			 const b2Vec2 &position, const uint32 identifier,
 			 const b2Vec2 *viewCenter, const b2Vec2 *extents)
 {
@@ -46,7 +46,7 @@ uint32 Arrow::Hit(const b2Vec2 &position, uint32 notSelectedIdentifier) const
 {
 	// Calculate the extent of the arrow's bounding box in viewport
 	// coordinates.
-	const float32 arrowExtent =
+	const float arrowExtent =
 		CalculateScale() * Arrow::k_size * 0.5f;
 	b2Vec2 arrowPosition;
 	// Translate position into this arrow's space.
@@ -84,12 +84,12 @@ void Arrow::SetViewParameters(const b2Vec2 *viewCenter, const b2Vec2 *extents)
 
 // Calculate the scaling factor for the arrow given the current
 // viewport extents.
-float32 Arrow::CalculateScale() const
+float Arrow::CalculateScale() const
 {
 	// Determine the minimum of a viewport dimension.  Extents are
 	// defined as half the viewport width / height so multiply by
 	// 2.0f to get the complete dimension.
-	const float32 minDimension =
+	const float minDimension =
 		std::min(m_extents->x, m_extents->y) * 2.0f;
 	// Calculate the scaling factor for the arrow in world space.
 	return (minDimension / Arrow::k_size) * m_scale;
@@ -112,8 +112,8 @@ b2Vec2* Arrow::CalculateViewportPosition(
 // With no transformation matrix applied, the arrow is drawn in box
 // area (3.5f, 3.5f) (see Arrow::k_size) and the overall bounding box
 // of the arrow is (-1.75f, -1.75f) to (1.75f, 1.75f).
-void Arrow::DrawArrow(const b2Color &color, const float32 angle,
-					  const float32 scale, const b2Vec2 &position)
+void Arrow::DrawArrow(const b2Color &color, const float angle,
+					  const float scale, const b2Vec2 &position)
 {
 	static const b2Vec2 square[] =
 	{
