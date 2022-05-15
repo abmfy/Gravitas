@@ -3,15 +3,14 @@
 Level1::Level1() {
     // Ground body
     b2BodyDef bodyDef;
-    b2Body *ground {m_world->CreateBody(&bodyDef)};
+    b2Body &ground {*m_world->CreateBody(&bodyDef)};
 
     // The border
     {
-        
         b2ChainShape chain;
         const b2Vec2 vertices[] {{20, 20}, {20, 0}, {-20, 0}, {-20, 40}, {20, 40}, {20, 25}};
         chain.CreateChain(vertices, 6);
-        ground->CreateFixture(&chain, 0);
+        ground.CreateFixture(&chain, 0);
     }
 
     // The higher square ground
@@ -19,7 +18,7 @@ Level1::Level1() {
         b2PolygonShape square;
         const b2Vec2 vertices[] {{0, 0}, {20, 0}, {20, 20}, {0, 20}};
         square.Set(vertices, 4);
-        ground->CreateFixture(&square, 0);
+        ground.CreateFixture(&square, 0);
     }
 
     // The lower square ground
@@ -27,7 +26,7 @@ Level1::Level1() {
         b2PolygonShape square;
         const b2Vec2 vertices[] {{0, 0}, {-20, 0}, {-20, 10}, {0, 10}};
         square.Set(vertices, 4);
-        ground->CreateFixture(&square, 0);
+        ground.CreateFixture(&square, 0);
     }
 
     // The water
@@ -40,10 +39,10 @@ Level1::Level1() {
         particleGroupDef.shape = &square;
         particleGroupDef.color = {0, 0, 127, 255};
         particleGroupDef.flags = b2_tensileParticle | b2_destructionListenerParticle;
-        b2ParticleGroup *group {m_particleSystem->CreateParticleGroup(particleGroupDef)};
+        b2ParticleGroup &group {*m_particleSystem->CreateParticleGroup(particleGroupDef)};
 
         // The threshold for passing the level
-        threshold = group->GetParticleCount() * 0.9;
+        threshold = group.GetParticleCount() * 0.9;
     }
 }
 

@@ -8,34 +8,14 @@
 class Level;
 struct Settings;
 
-typedef Level* TestCreateFcn();
+using TestCreateFcn = Level*();
 
-#define	RAND_LIMIT	32767
-#define DRAW_STRING_NEW_LINE 25
-
-/// Random number in range [-1,1]
-inline float RandomFloat()
-{
-	float r = (float)(rand() & (RAND_LIMIT));
-	r /= RAND_LIMIT;
-	r = 2.0f * r - 1.0f;
-	return r;
-}
-
-/// Random floating point number in range [lo, hi]
-inline float RandomFloat(float lo, float hi)
-{
-	float r = (float)(rand() & (RAND_LIMIT));
-	r /= RAND_LIMIT;
-	r = (hi - lo) * r + lo;
-	return r;
-}
+const int RAND_LIMIT {32767};
+const int DRAW_STRING_NEW_LINE {25};
 
 /// Test settings. Some can be controlled in the GUI.
-struct Settings
-{
-	Settings()
-	{
+struct Settings {
+	Settings() {
 		viewCenter.Set(0.0f, 20.0f);
 		hz = 60.0f;
 		velocityIterations = 8;
@@ -115,10 +95,9 @@ public:
 	Level *level;
 };
 
-const int k_maxContactPoints = 2048;
+const int k_maxContactPoints {2048};
 
-struct ContactPoint
-{
+struct ContactPoint {
 	b2Fixture* fixtureA;
 	b2Fixture* fixtureB;
 	b2Vec2 normal;
@@ -129,10 +108,8 @@ struct ContactPoint
 	float separation;
 };
 
-class Level : public b2ContactListener
-{
+class Level: public b2ContactListener {
 public:
-
 	const int gravityIntensity {100};
 	const double particleRadius {0.1};
 
@@ -161,16 +138,15 @@ public:
 	virtual void ParticleGroupDestroyed(b2ParticleGroup* group) { B2_NOT_USED(group); }
 
 	// Callbacks for derived classes.
-	virtual void BeginContact(b2Contact* contact) { B2_NOT_USED(contact); }
-	virtual void EndContact(b2Contact* contact) { B2_NOT_USED(contact); }
-	virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
-	virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
-	{
+	virtual void BeginContact(b2Contact* contact) override { B2_NOT_USED(contact); }
+	virtual void EndContact(b2Contact* contact) override { B2_NOT_USED(contact); }
+	virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold) override;
+	virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override {
 		B2_NOT_USED(contact);
 		B2_NOT_USED(impulse);
 	}
 
-	void ShiftOrigin(const b2Vec2& newOrigin);
+	void ShiftOrigin(const b2Vec2 &newOrigin);
 	virtual float GetDefaultViewZoom() const;
 
 	// Apply a preset range of colors to a particle group.
@@ -178,7 +154,7 @@ public:
 	// particlesPerColor particles in the specified group.
 	// If particlesPerColor is 0, the particles in the group are divided into
 	// k_ParticleColorsCount equal sets of colored particles.
-	void ColorParticleGroup(b2ParticleGroup * const group,
+	void ColorParticleGroup(b2ParticleGroup *const group,
 							uint32 particlesPerColor);
 
 	// Remove particle parameters matching "filterMask" from the set of
@@ -193,10 +169,10 @@ protected:
 	friend class BoundaryListener;
 	friend class ContactListener;
 
-	int score;
-	int threshold;
+	int score {};
+	int threshold {};
 
-	b2Body* m_groundBody;
+	b2Body *m_groundBody;
 	b2AABB m_worldAABB;
 	ContactPoint m_points[k_maxContactPoints];
 	int m_pointCount;
@@ -219,7 +195,7 @@ protected:
 	b2Profile m_totalProfile;
 
 	// Valid particle parameters for this test.
-	ParticleParameter::Value* m_particleParameters;
+	ParticleParameter::Value *m_particleParameters;
 	ParticleParameter::Definition m_particleParameterDef;
 
 	static const b2ParticleColor k_ParticleColors[];
