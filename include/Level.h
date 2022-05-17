@@ -3,7 +3,6 @@
 
 #include "Box2D/Box2D.h"
 #include "Render.h"
-#include "ParticleParameter.h"
 
 class Level;
 struct Settings;
@@ -16,25 +15,16 @@ const int DRAW_STRING_NEW_LINE {25};
 /// Test settings. Some can be controlled in the GUI.
 struct Settings {
 	Settings() {
-		viewCenter.Set(0.0f, 20.0f);
-		hz = 60.0f;
+		viewCenter.Set(0, 20);
+		hz = 60;
 		velocityIterations = 8;
 		positionIterations = 3;
 		// Particle iterations are needed for numerical stability in particle
 		// simulations with small particles and relatively high gravity.
 		// b2CalculateParticleIterations helps to determine the number.
-		particleIterations = b2CalculateParticleIterations(10, 0.04f, 1 / hz);
+		particleIterations = b2CalculateParticleIterations(10, 0.04, 1 / hz);
 		drawShapes = 1;
 		drawParticles = 1;
-		drawJoints = 0;
-		drawAABBs = 0;
-		drawContactPoints = 0;
-		drawContactNormals = 0;
-		drawContactImpulse = 0;
-		drawFrictionImpulse = 0;
-		drawCOMs = 0;
-		drawStats = 0;
-		drawProfile = 0;
 		enableWarmStarting = 1;
 		enableContinuous = 1;
 		enableSubStepping = 0;
@@ -53,15 +43,6 @@ struct Settings {
 	int particleIterations;
 	int drawShapes;
 	int drawParticles;
-	int drawJoints;
-	int drawAABBs;
-	int drawContactPoints;
-	int drawContactNormals;
-	int drawContactImpulse;
-	int drawFrictionImpulse;
-	int drawCOMs;
-	int drawStats;
-	int drawProfile;
 	int enableWarmStarting;
 	int enableContinuous;
 	int enableSubStepping;
@@ -86,7 +67,7 @@ extern TestEntry g_testEntries[];
 // nullify the mouse joint.
 class DestructionListener: public b2DestructionListener {
 public:
-	void SayGoodbye(b2Fixture *fixture) override { B2_NOT_USED(fixture); }
+	void SayGoodbye(b2Fixture*) override {}
 	void SayGoodbye(b2Joint*) override;
 	void SayGoodbye(b2ParticleGroup*) override;
 
@@ -98,8 +79,8 @@ public:
 const int k_maxContactPoints {2048};
 
 struct ContactPoint {
-	b2Fixture* fixtureA;
-	b2Fixture* fixtureB;
+	b2Fixture *fixtureA;
+	b2Fixture *fixtureB;
 	b2Vec2 normal;
 	b2Vec2 position;
 	b2PointState state;
@@ -110,43 +91,34 @@ struct ContactPoint {
 
 class Level: public b2ContactListener {
 public:
-	const int gravityIntensity {100};
+	const int gravityIntensity {1000};
 	const double particleRadius {0.1};
 
 	Level();
 	virtual ~Level();
 
-    void DrawTitle(const char *string);
-	virtual void Step(Settings* settings);
-	virtual void Keyboard(unsigned char key) { B2_NOT_USED(key); }
-	virtual void KeyboardSpecial(int key);
-	virtual void KeyboardUp(unsigned char key) { B2_NOT_USED(key); }
-	void ShiftMouseDown(const b2Vec2& p);
-	virtual void MouseDown(const b2Vec2& p);
-	virtual void MouseUp(const b2Vec2& p);
-	virtual void MouseMove(const b2Vec2& p);
-	void LaunchBomb();
-	void LaunchBomb(const b2Vec2& position, const b2Vec2& velocity);
-	
-	void SpawnBomb(const b2Vec2& worldPt);
-	void CompleteBombSpawn(const b2Vec2& p);
+    void DrawTitle(const char*);
+	virtual void Step(Settings*);
+	virtual void Keyboard(unsigned char) {}
+	virtual void KeyboardSpecial(int);
+	virtual void KeyboardUp(unsigned char) {}
+	virtual void MouseDown(const b2Vec2&);
+	virtual void MouseUp(const b2Vec2&);
+	virtual void MouseMove(const b2Vec2&);
 
 	// Let derived tests know that a joint was destroyed.
-	virtual void JointDestroyed(b2Joint* joint) { B2_NOT_USED(joint); }
+	virtual void JointDestroyed(b2Joint*) {}
 
 	// Let derived tests know that a particle group was destroyed.
-	virtual void ParticleGroupDestroyed(b2ParticleGroup* group) { B2_NOT_USED(group); }
+	virtual void ParticleGroupDestroyed(b2ParticleGroup*) {}
 
 	// Callbacks for derived classes.
-	virtual void BeginContact(b2Contact* contact) override { B2_NOT_USED(contact); }
-	virtual void EndContact(b2Contact* contact) override { B2_NOT_USED(contact); }
-	virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold) override;
-	virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override {
-		B2_NOT_USED(contact);
-		B2_NOT_USED(impulse);
-	}
+	virtual void BeginContact(b2Contact*) override {}
+	virtual void EndContact(b2Contact*) override {}
+	virtual void PreSolve(b2Contact*, const b2Manifold*) override;
+	virtual void PostSolve(b2Contact*, const b2ContactImpulse*) override {}
 
-	void ShiftOrigin(const b2Vec2 &newOrigin);
+	void ShiftOrigin(const b2Vec2&);
 	virtual float GetDefaultViewZoom() const;
 
 	// Apply a preset range of colors to a particle group.
@@ -154,15 +126,7 @@ public:
 	// particlesPerColor particles in the specified group.
 	// If particlesPerColor is 0, the particles in the group are divided into
 	// k_ParticleColorsCount equal sets of colored particles.
-	void ColorParticleGroup(b2ParticleGroup *const group,
-							uint32 particlesPerColor);
-
-	// Remove particle parameters matching "filterMask" from the set of
-	// particle parameters available for this test.
-	void InitializeParticleParameters(const uint32 filterMask);
-
-	// Restore default particle parameters.
-	void RestoreParticleParameters();
+	void ColorParticleGroup(b2ParticleGroup *const, uint32);
 
 protected:
 	friend class DestructionListener;
@@ -179,12 +143,9 @@ protected:
 	DestructionListener m_destructionListener;
 	DebugDraw m_debugDraw;
 	int m_textLine;
-	b2World* m_world;
-	b2ParticleSystem* m_particleSystem;
-	b2Body* m_bomb;
-	b2MouseJoint* m_mouseJoint;
-	b2Vec2 m_bombSpawnPoint;
-	bool m_bombSpawning;
+	b2World *m_world;
+	b2ParticleSystem *m_particleSystem;
+	b2MouseJoint *m_mouseJoint;
 	b2Vec2 m_mouseWorld;
 	bool m_mouseTracing;
 	b2Vec2 m_mouseTracerPosition;
@@ -193,10 +154,6 @@ protected:
 
 	b2Profile m_maxProfile;
 	b2Profile m_totalProfile;
-
-	// Valid particle parameters for this test.
-	ParticleParameter::Value *m_particleParameters;
-	ParticleParameter::Definition m_particleParameterDef;
 
 	static const b2ParticleColor k_ParticleColors[];
 	static const uint32 k_ParticleColorsCount;
