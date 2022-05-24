@@ -1,5 +1,7 @@
 #include "Level2.h"
 
+#include "Water.h"
+
 Level2::Level2(): trigger1 {30000}, trigger2 {5000} {
     // Ground body
     b2BodyDef bodyDef;
@@ -71,15 +73,11 @@ Level2::Level2(): trigger1 {30000}, trigger2 {5000} {
         b2PolygonShape square;
         const b2Vec2 vertices[] {{-15, 7}, {-15, 12}, {-5, 7}, {-5, 12}};
         square.Set(vertices, 4);
-        
-        b2ParticleGroupDef particleGroupDef;
-        particleGroupDef.shape = &square;
-        particleGroupDef.color = {0, 0, 127, 255};
-        particleGroupDef.flags = b2_tensileParticle | b2_fixtureContactListenerParticle | b2_destructionListenerParticle;
-        b2ParticleGroup *group {m_particleSystem->CreateParticleGroup(particleGroupDef)};
+
+        Water water {*m_particleSystem, square};
 
         // The threshold for passing the level
-        threshold = group->GetParticleCount() * 0.9;
+        levelManager.setThreshold(water.getParticleCount() * 0.9);
     }
 }
 

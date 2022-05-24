@@ -4,6 +4,8 @@
 
 #include "glui/glui.h"
 
+#include "WaterContactListener.h"
+
 
 void DestructionListener::SayGoodbye(b2Joint *joint) {
     if (level->m_mouseJoint == joint) {
@@ -18,7 +20,7 @@ void DestructionListener::SayGoodbye(b2ParticleGroup *group) {
 }
 
 void DestructionListener::SayGoodbye(b2ParticleSystem *system, int index) {
-    level->score++;
+    level->levelManager.leaking(*system, index);
 }
 
 const b2ParticleColor Level::k_ParticleColors[] = {
@@ -35,7 +37,7 @@ const uint32 Level::k_ParticleColorsCount =
     B2_ARRAY_SIZE(Level::k_ParticleColors);
 
 Level::Level() {
-    const b2ParticleSystemDef particleSystemDef;
+    b2ParticleSystemDef particleSystemDef;
     b2Vec2 gravity {0, -static_cast<float>(gravityIntensity)};
     gravity.Set(0, -gravityIntensity);
     m_world = new b2World(gravity);
@@ -102,6 +104,10 @@ void Level::PreSolve(b2Contact* contact, const b2Manifold* oldManifold) {
         cp->separation = worldManifold.separations[i];
         m_pointCount++;
     }
+}
+
+void Level::BeginContact(b2ParticleSystem *system, b2ParticleContact *contact) {
+    WaterContactListener::contact(*system, contact->GetIndexA(), contact->GetIndexB());
 }
 
 void Level::DrawTitle(const char *string) {
@@ -353,16 +359,7 @@ void Level::Step(Settings *settings) {
     }
 
     // Show score
-    {
-        char str[64];
-        sprintf(str, "Score: %d", score);
-        m_debugDraw.DrawString(5, m_textLine, str);
-        m_textLine += DRAW_STRING_NEW_LINE;
-        if (score > threshold) {
-            m_debugDraw.DrawString(5, m_textLine, "You win!");
-            m_textLine += DRAW_STRING_NEW_LINE;
-        }
-    }
+    levelManager.showScore(m_debugDraw, m_textLine);
 }
 
 void Level::ShiftOrigin(const b2Vec2 &newOrigin) {

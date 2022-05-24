@@ -1,5 +1,5 @@
-#ifndef PARTICLE_EMITTER_H
-#define PARTICLE_EMITTER_H
+#ifndef ParticleEmitter_h
+#define ParticleEmitter_h
 #include <cmath>
 #include <set>
 

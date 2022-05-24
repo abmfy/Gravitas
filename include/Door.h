@@ -1,5 +1,5 @@
-#ifndef DOOR_H
-#define DOOR_H
+#ifndef Door_h
+#define Door_h
 
 #include "Box2D/Box2D.h"
 

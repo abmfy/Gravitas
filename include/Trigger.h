@@ -1,5 +1,5 @@
-#ifndef TRIGGER_H
-#define TRIGGER_H
+#ifndef Trigger_h
+#define Trigger_h
 
 #include "Box2D/Box2D.h"
 

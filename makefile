@@ -7,7 +7,7 @@ LIBRARY    = lib /usr/X11/lib
 LINK	   = liquidfun GL glut glui X11 Xrandr Xxf86vm
 TARGET     = build/main
 DEFINE	   = GL_SILENCE_DEPRECATION
-CMPLOPTION = -MMD -g -std=c++17 $(addprefix -D,$(DEFINE)) $(addprefix -I,$(INCLUDE))
+CMPLOPTION = -MMD -g -std=c++20 $(addprefix -D,$(DEFINE)) $(addprefix -I,$(INCLUDE))
 LINKOPTION = -g $(addprefix -L,$(LIBRARY)) $(addprefix -l,$(LINK))
 
 $(TARGET): $(OBJECT)

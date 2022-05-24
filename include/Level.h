@@ -1,8 +1,10 @@
-#ifndef LEVEL_H
-#define LEVEL_H
+#ifndef Level_h
+#define Level_h
 
 #include "Box2D/Box2D.h"
 #include "Render.h"
+
+#include "LevelManager.h"
 
 class Level;
 struct Settings;
@@ -91,7 +93,7 @@ struct ContactPoint {
 
 class Level: public b2ContactListener {
 public:
-	const int gravityIntensity {1000};
+	const int gravityIntensity {100};
 	const double particleRadius {0.1};
 
 	Level();
@@ -118,6 +120,8 @@ public:
 	virtual void PreSolve(b2Contact*, const b2Manifold*) override;
 	virtual void PostSolve(b2Contact*, const b2ContactImpulse*) override {}
 
+	void BeginContact(b2ParticleSystem*, b2ParticleContact*) override;
+
 	void ShiftOrigin(const b2Vec2&);
 	virtual float GetDefaultViewZoom() const;
 
@@ -133,8 +137,7 @@ protected:
 	friend class BoundaryListener;
 	friend class ContactListener;
 
-	int score {};
-	int threshold {};
+	LevelManager levelManager;
 
 	b2Body *m_groundBody;
 	b2AABB m_worldAABB;
