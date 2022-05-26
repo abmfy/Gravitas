@@ -7,6 +7,8 @@
 #include "Level.h"
 #include "glui/glui.h"
 
+#include "SaveManager.h"
+
 namespace TestMain {
 
 namespace {
@@ -73,6 +75,7 @@ static void Timer(int) {
 }
 
 static void SimulationLoop() {
+    glClearColor(0.1, 0.1, 0.1, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
@@ -99,49 +102,37 @@ static void SimulationLoop() {
         settings.viewCenter.Set(0, 20 * viewZoom);
         Resize(width, height);
     }
-
-    // print world step time stats every 600 frames
-    static int s_printCount {};
-    static b2Stat st;
-    st.Record(settings.stepTimeOut);
-
-    const int STAT_PRINT_INTERVAL {600};
-    if (settings.printStepTimeStats && st.GetCount() == STAT_PRINT_INTERVAL) {
-        printf("World Step Time samples %i-%i: %fmin %fmax %favg (ms)\n",
-            s_printCount * STAT_PRINT_INTERVAL,
-            (s_printCount + 1) * STAT_PRINT_INTERVAL - 1,
-            st.GetMin(), st.GetMax(), st.GetMean());
-        st.Clear();
-        s_printCount++;
-    }
 }
 
 static void Keyboard(unsigned char key, int x, int y) {
     switch (key) {
         case 27: {
-            // freeglut specific function
-            glutLeaveMainLoop();
-            exit(0);
+            settings.pause = !settings.pause;
+            break;
+        }
+
+        case 'q':
+        case 'Q': {
+            if (settings.pause) {
+                glutLeaveMainLoop();
+                exit(0);
+            }
             break;
         }
 
         // Press 'r' to reset.
-        case 'r': {
+        case 'r':
+        case 'R': {
             delete level;
             level = entry->createFcn();
             break;
         }
 
-        case 'p': {
-            settings.pause = !settings.pause;
-            break;
-        }
-
-        // Press [ to prev test.
-        case '[': {
-            --testSelection;
-            if (testSelection < 0) {
-                testSelection = testCount - 1;
+        // Press A to prev test.
+        case 'a':
+        case 'A': {
+            if (testSelection) {
+                testSelection--;
             }
             if (glui) {
                 glui->sync_live();
@@ -149,11 +140,11 @@ static void Keyboard(unsigned char key, int x, int y) {
             break;
         }
 
-        // Press ] to next test.
-        case ']': {
-            ++testSelection;
-            if (testSelection == testCount) {
-                testSelection = 0;
+        // Press D to next test.
+        case 'd':
+        case 'D': {
+            if (testSelection < SaveManager::getInstance().getLevel() - 1) {
+                testSelection++;
             }
             if (glui) {
                 glui->sync_live();

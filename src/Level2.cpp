@@ -3,6 +3,8 @@
 #include "Water.h"
 
 Level2::Level2(): trigger1 {30000}, trigger2 {5000} {
+    id = 2;
+
     // Ground body
     b2BodyDef bodyDef;
     b2Body &ground {*m_world->CreateBody(&bodyDef)};

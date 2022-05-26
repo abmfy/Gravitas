@@ -33,7 +33,6 @@ struct Settings {
 		enableSleep = 1;
 		pause = 0;
 		singleStep = 0;
-		printStepTimeStats = 1;
 		stepTimeOut = 0;
 		strictContacts = 0;
 	}
@@ -51,7 +50,6 @@ struct Settings {
 	int enableSleep;
 	int pause;
 	int singleStep;
-	int printStepTimeStats;
 	int strictContacts;
 
 	/// Measures how long did the world step took, in ms
@@ -99,6 +97,8 @@ public:
 	Level();
 	virtual ~Level();
 
+	int id;
+
     void DrawTitle(const char*);
 	virtual void Step(Settings*);
 	virtual void Keyboard(unsigned char) {}
@@ -119,8 +119,6 @@ public:
 	virtual void EndContact(b2Contact*) override {}
 	virtual void PreSolve(b2Contact*, const b2Manifold*) override;
 	virtual void PostSolve(b2Contact*, const b2ContactImpulse*) override {}
-
-	void BeginContact(b2ParticleSystem*, b2ParticleContact*) override;
 
 	void ShiftOrigin(const b2Vec2&);
 	virtual float GetDefaultViewZoom() const;
@@ -153,10 +151,6 @@ protected:
 	bool m_mouseTracing;
 	b2Vec2 m_mouseTracerPosition;
 	b2Vec2 m_mouseTracerVelocity;
-	int m_stepCount;
-
-	b2Profile m_maxProfile;
-	b2Profile m_totalProfile;
 
 	static const b2ParticleColor k_ParticleColors[];
 	static const uint32 k_ParticleColorsCount;

@@ -4,6 +4,8 @@
 #include "WaterType.h"
 
 Level3::Level3() {
+    id = 3;
+
     // Ground body
     b2BodyDef bodyDef;
     b2Body &ground {*m_world->CreateBody(&bodyDef)};

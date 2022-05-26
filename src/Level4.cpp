@@ -3,6 +3,8 @@
 #include "Water.h"
 
 Level4::Level4() {
+    id = 4;
+
     // Ground body
     b2BodyDef bodyDef;
     b2Body &ground {*m_world->CreateBody(&bodyDef)};

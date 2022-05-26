@@ -13,7 +13,7 @@ public:
     static b2ParticleColor getColor(WaterType);
     // Create some water in system
     Water(b2ParticleSystem&, const b2Shape&, WaterType = WaterType::water, 
-        const unsigned = b2_tensileParticle | b2_fixtureContactListenerParticle | b2_destructionListenerParticle | b2_colorMixingParticle | b2_particleContactFilterParticle);
+        const unsigned = b2_tensileParticle | b2_fixtureContactListenerParticle | b2_destructionListenerParticle | b2_colorMixingParticle | b2_particleContactListenerParticle);
     int getParticleCount() const;
 };
 

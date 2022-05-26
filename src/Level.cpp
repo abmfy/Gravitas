@@ -4,7 +4,7 @@
 
 #include "glui/glui.h"
 
-#include "WaterContactListener.h"
+#include "SaveManager.h"
 
 
 void DestructionListener::SayGoodbye(b2Joint *joint) {
@@ -55,7 +55,6 @@ Level::Level() {
     m_particleSystem->SetDensity(1.2);
     m_particleSystem->SetRadius(particleRadius);
 
-    m_stepCount = 0;
 
     m_mouseWorld = b2Vec2_zero;
     m_mouseTracing = false;
@@ -64,18 +63,14 @@ Level::Level() {
 
     b2BodyDef bodyDef;
     m_groundBody = m_world->CreateBody(&bodyDef);
-
-    memset(&m_maxProfile, 0, sizeof(b2Profile));
-    memset(&m_totalProfile, 0, sizeof(b2Profile));
 }
 
 Level::~Level() {
     // By deleting the world, we delete the bomb, mouse joint, etc.
     delete m_world;
-    m_world = nullptr;
 }
 
-void Level::PreSolve(b2Contact* contact, const b2Manifold* oldManifold) {
+void Level::PreSolve(b2Contact *contact, const b2Manifold *oldManifold) {
     const b2Manifold *manifold {contact->GetManifold()};
 
     if (manifold->pointCount == 0) {
@@ -104,10 +99,6 @@ void Level::PreSolve(b2Contact* contact, const b2Manifold* oldManifold) {
         cp->separation = worldManifold.separations[i];
         m_pointCount++;
     }
-}
-
-void Level::BeginContact(b2ParticleSystem *system, b2ParticleContact *contact) {
-    WaterContactListener::contact(*system, contact->GetIndexA(), contact->GetIndexB());
 }
 
 void Level::DrawTitle(const char *string) {
@@ -227,7 +218,7 @@ void Level::MouseDown(const b2Vec2 &p) {
         md.bodyA = m_groundBody;
         md.bodyB = body;
         md.target = p;
-        md.maxForce = 1000.0 * body->GetMass();
+        md.maxForce = 1000 * body->GetMass();
         m_mouseJoint = static_cast<b2MouseJoint*>(m_world->CreateJoint(&md));
         body->SetAwake(true);
     }
@@ -260,7 +251,7 @@ void Level::Step(Settings *settings) {
             timeStep = 0;
         }
 
-        m_debugDraw.DrawString(5, m_textLine, "****PAUSED****");
+        m_debugDraw.DrawString(5, m_textLine, "****PAUSED****    Press R to restart, Q to quit");
         m_textLine += DRAW_STRING_NEW_LINE;
     }
 
@@ -285,32 +276,6 @@ void Level::Step(Settings *settings) {
     settings->stepTimeOut = timer.GetMilliseconds();
 
     m_world->DrawDebugData();
-
-    if (timeStep > 0) {
-        m_stepCount++;
-    }
-
-    // Track maximum profile times
-    {
-        const b2Profile &p {m_world->GetProfile()};
-        m_maxProfile.step = b2Max(m_maxProfile.step, p.step);
-        m_maxProfile.collide = b2Max(m_maxProfile.collide, p.collide);
-        m_maxProfile.solve = b2Max(m_maxProfile.solve, p.solve);
-        m_maxProfile.solveInit = b2Max(m_maxProfile.solveInit, p.solveInit);
-        m_maxProfile.solveVelocity = b2Max(m_maxProfile.solveVelocity, p.solveVelocity);
-        m_maxProfile.solvePosition = b2Max(m_maxProfile.solvePosition, p.solvePosition);
-        m_maxProfile.solveTOI = b2Max(m_maxProfile.solveTOI, p.solveTOI);
-        m_maxProfile.broadphase = b2Max(m_maxProfile.broadphase, p.broadphase);
-
-        m_totalProfile.step += p.step;
-        m_totalProfile.collide += p.collide;
-        m_totalProfile.solve += p.solve;
-        m_totalProfile.solveInit += p.solveInit;
-        m_totalProfile.solveVelocity += p.solveVelocity;
-        m_totalProfile.solvePosition += p.solvePosition;
-        m_totalProfile.solveTOI += p.solveTOI;
-        m_totalProfile.broadphase += p.broadphase;
-    }
 
     if (m_mouseTracing && !m_mouseJoint) {
         float delay = {0.1};
@@ -360,6 +325,11 @@ void Level::Step(Settings *settings) {
 
     // Show score
     levelManager.showScore(m_debugDraw, m_textLine);
+
+    // Save progress
+    if (levelManager.didWin()) {
+        SaveManager::getInstance().updateLevel(id + 1);
+    }
 }
 
 void Level::ShiftOrigin(const b2Vec2 &newOrigin) {
