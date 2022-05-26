@@ -5,8 +5,9 @@
 #include "Render.h"
 
 #include "LevelManager.h"
-#include "WaterType.h"
-using WaterType::poison, WaterType::water;
+
+#include "Water.h"
+using Water::Type::poison, Water::Type::water;
 
 // Pixels of a line
 const int newLine {25};
@@ -29,16 +30,9 @@ int LevelManager::getScore() const {
 
 void LevelManager::showScore(DebugDraw &draw, int &line) const {
     char str[64];
-    sprintf(str, "Score: %d", getScore());
+    sprintf(str, "Score: %d %s", getScore(), didWin() ? "You win!" : didLose() ? "You lose!" : "");
     draw.DrawString(5, line, str);
     line += newLine;
-    if (didWin()) {
-        draw.DrawString(5, line, "You win!");
-        line += newLine;
-    } else if (didLose()) {
-        draw.DrawString(5, line, "You lose!");
-        line += newLine;
-    }
 }
 
 bool LevelManager::didWin() const {
@@ -52,7 +46,7 @@ bool LevelManager::didLose() const {
 void LevelManager::leaking(b2ParticleSystem &system, int index) {
     void *data {system.GetUserDataBuffer()[index]};
     if (data) {
-        WaterType &type {*static_cast<WaterType*>(data)};
+        Water::Type &type {*static_cast<Water::Type*>(data)};
         switch (type) {
             case water: {
                 incrementScore();

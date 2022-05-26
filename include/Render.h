@@ -41,8 +41,6 @@ public:
 	void DrawAABB(b2AABB *aabb, const b2Color &color);
 };
 
-float ComputeFPS();
-
 void LoadOrtho2DMatrix(double left, double right, double bottom, double top);
 
 #endif

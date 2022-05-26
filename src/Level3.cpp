@@ -1,7 +1,6 @@
 #include "Level3.h"
 
 #include "Water.h"
-#include "WaterType.h"
 
 Level3::Level3() {
     id = 3;
@@ -60,7 +59,7 @@ Level3::Level3() {
         const b2Vec2 vertices[] {{-2.6, 30}, {-2.6, 33}, {-7.4, 30}, {-7.4, 33}};
         square.Set(vertices, 4);
 
-        Water poison {*m_particleSystem, square, WaterType::poison};
+        Water poison {*m_particleSystem, square, Water::Type::poison};
     }
 
     // The poison
@@ -69,7 +68,7 @@ Level3::Level3() {
         const b2Vec2 vertices[] {{7.6, 5}, {7.6, 8}, {12.4, 5}, {12.4, 8}};
         square.Set(vertices, 4);
 
-        Water poison {*m_particleSystem, square, WaterType::poison};
+        Water poison {*m_particleSystem, square, Water::Type::poison};
     }
 }
 

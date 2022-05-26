@@ -16,7 +16,7 @@ class Level2: public Level {
 public:
     // Detect the contact between the water and the trigger
     void BeginContact(b2ParticleSystem*, b2ParticleBodyContact*) override;
-    void Step(Settings*) override;
+    void Step(int) override;
 
     static Level *create();
 };

@@ -103,8 +103,8 @@ void Level2::BeginContact(b2ParticleSystem*, b2ParticleBodyContact *contact) {
     }
 }
 
-void Level2::Step(Settings* settings) {
-    Level::Step(settings);
+void Level2::Step(int paused) {
+    Level::Step(paused);
     if (trigger1.isTriggered() && trigger2.isTriggered()) {
         door.open();
         if (door.body) {

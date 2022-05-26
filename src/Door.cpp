@@ -10,8 +10,8 @@ void Door::open() {
 
 b2Color Door::getColor() const {
     if (opened) {
-        // Black
-        return {};
+        // Deep gray
+        return {0.1, 0.1, 0.1};
     } else {
         // Red
         return {1, 0, 0};

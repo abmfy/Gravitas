@@ -235,8 +235,7 @@ void DebugDraw::DrawString(int x, int y, const char *string, ...) {
 	glColor3f(0.9, 0.6, 0.6);
 	glRasterPos2i(x, y);
 	int length {static_cast<int>(strlen(buffer))};
-	for (int i {}; i < length; i++)
-	{
+	for (int i {}; i < length; i++) {
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, buffer[i]);
 	}
 
@@ -273,17 +272,4 @@ void DebugDraw::DrawAABB(b2AABB *aabb, const b2Color &c) {
 	glVertex2f(aabb->upperBound.x, aabb->upperBound.y);
 	glVertex2f(aabb->lowerBound.x, aabb->upperBound.y);
 	glEnd();
-}
-
-float ComputeFPS() {
-	static bool debugPrintFrameTime {};
-	static int lastms {};
-	int curms {glutGet(GLUT_ELAPSED_TIME)};
-	int delta {curms - lastms};
-	lastms = curms;
-
-	static float dsmooth {16};
-	dsmooth = (dsmooth * 30 + delta) / 31;
-
-	return dsmooth;
 }
