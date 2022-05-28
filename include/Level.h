@@ -28,7 +28,10 @@ public:
 	static constexpr float hz {60};
 	static const int velocityIterations {8};
 	static const int positionIterations {3};
-	const int particleIterations {b2CalculateParticleIterations(10, 0.04, 1 / hz)};
+	static const int particleIterations;
+
+	static const b2ParticleSystemDef defaultParticleSystemDef;
+	static const b2BodyDef defaultBodyDef;
 
 	int id;
 
@@ -45,11 +48,12 @@ protected:
 	LevelManager levelManager;
 	DestructionListener destructionListener {levelManager};
 
-	b2Body *m_groundBody;
-	DebugDraw m_debugDraw;
-	int m_textLine;
-	b2World *m_world;
-	b2ParticleSystem *m_particleSystem;
+	b2World world {{0, -static_cast<float>(gravityIntensity)}};
+	b2ParticleSystem *particleSystem {world.CreateParticleSystem(&defaultParticleSystemDef)};
+	b2Body *groundBody {world.CreateBody(&defaultBodyDef)};
+
+	DebugDraw debugDraw;
+	int textLine {30};
 };
 
 #endif

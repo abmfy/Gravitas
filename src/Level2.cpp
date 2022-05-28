@@ -7,7 +7,7 @@ Level2::Level2(): trigger1 {30000}, trigger2 {5000} {
 
     // Ground body
     b2BodyDef bodyDef;
-    b2Body &ground {*m_world->CreateBody(&bodyDef)};
+    b2Body &ground {*world.CreateBody(&bodyDef)};
 
     // The border
     {
@@ -43,7 +43,7 @@ Level2::Level2(): trigger1 {30000}, trigger2 {5000} {
 
             b2BodyDef bodyDef;
             bodyDef.userData = &trigger1;
-            m_world->CreateBody(&bodyDef)->CreateFixture(&square, 0);
+            world.CreateBody(&bodyDef)->CreateFixture(&square, 0);
         }
 
         {
@@ -54,7 +54,7 @@ Level2::Level2(): trigger1 {30000}, trigger2 {5000} {
 
             b2BodyDef bodyDef;
             bodyDef.userData = &trigger2;
-            m_world->CreateBody(&bodyDef)->CreateFixture(&square, 0);
+            world.CreateBody(&bodyDef)->CreateFixture(&square, 0);
         }
     }
 
@@ -65,7 +65,7 @@ Level2::Level2(): trigger1 {30000}, trigger2 {5000} {
         door.shape = shape;
 
         b2BodyDef bodyDef;
-        b2Body *body {m_world->CreateBody(&bodyDef)};
+        b2Body *body {world.CreateBody(&bodyDef)};
         door.body = body;
         body->CreateFixture(&shape, 0);
     }
@@ -76,7 +76,7 @@ Level2::Level2(): trigger1 {30000}, trigger2 {5000} {
         const b2Vec2 vertices[] {{-15, 7}, {-15, 12}, {-5, 7}, {-5, 12}};
         square.Set(vertices, 4);
 
-        Water water {*m_particleSystem, square};
+        Water water {*particleSystem, square};
 
         // The threshold for passing the level
         levelManager.setThreshold(water.getParticleCount() * 0.9);
@@ -85,7 +85,7 @@ Level2::Level2(): trigger1 {30000}, trigger2 {5000} {
 
 void Level2::drawTrigger(const Trigger &trigger) {
     const b2PolygonShape &shape {trigger.shape};
-    m_debugDraw.DrawSolidPolygon(shape.m_vertices, shape.m_count, trigger.getColor());
+    debugDraw.DrawSolidPolygon(shape.m_vertices, shape.m_count, trigger.getColor());
 }
 
 void Level2::drawTriggers() {
@@ -94,7 +94,7 @@ void Level2::drawTriggers() {
 }
 
 void Level2::drawDoor() {
-    m_debugDraw.DrawSegment(door.shape.m_vertex1, door.shape.m_vertex2, door.getColor());
+    debugDraw.DrawSegment(door.shape.m_vertex1, door.shape.m_vertex2, door.getColor());
 }
 
 void Level2::BeginContact(b2ParticleSystem*, b2ParticleBodyContact *contact) {
@@ -108,7 +108,7 @@ void Level2::Step(int paused) {
     if (trigger1.isTriggered() && trigger2.isTriggered()) {
         door.open();
         if (door.body) {
-            m_world->DestroyBody(door.body);
+            world.DestroyBody(door.body);
             door.body = nullptr;
         }
     }

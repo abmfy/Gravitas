@@ -7,7 +7,7 @@ Level4::Level4() {
 
     // Ground body
     b2BodyDef bodyDef;
-    b2Body &ground {*m_world->CreateBody(&bodyDef)};
+    b2Body &ground {*world.CreateBody(&bodyDef)};
 
     // The border
     {
@@ -32,7 +32,7 @@ Level4::Level4() {
         const b2Vec2 vertices[] {{-10, 34}, {-10, 31}, {-5, 34}, {-5, 31}};
         square.Set(vertices, 4);
 
-        Water water {*m_particleSystem, square};
+        Water water {*particleSystem, square};
 
         // The threshold for passing the level
         levelManager.setThreshold(water.getParticleCount() * 0.9);
@@ -43,8 +43,8 @@ Level4::Level4() {
         b2BodyDef def;
         def.type = b2_dynamicBody;
         def.fixedRotation = true;
-        b2Body &body1 = *m_world->CreateBody(&def);
-        b2Body &body2 = *m_world->CreateBody(&def);
+        b2Body &body1 = *world.CreateBody(&def);
+        b2Body &body2 = *world.CreateBody(&def);
         
         b2PolygonShape square;
 
@@ -61,7 +61,7 @@ Level4::Level4() {
         jointDef.collideConnected = true;
         jointDef.length = 15;
 
-        m_world->CreateJoint(&jointDef);
+        world.CreateJoint(&jointDef);
     }
 }
 

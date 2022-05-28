@@ -7,7 +7,7 @@ Level3::Level3() {
 
     // Ground body
     b2BodyDef bodyDef;
-    b2Body &ground {*m_world->CreateBody(&bodyDef)};
+    b2Body &ground {*world.CreateBody(&bodyDef)};
 
     // The border
     {
@@ -47,7 +47,7 @@ Level3::Level3() {
         const b2Vec2 vertices[] {{-2.5, 43}, {-2.5, 40}, {2.5, 40}, {2.5, 43}};
         square.Set(vertices, 4);
 
-        Water water {*m_particleSystem, square};
+        Water water {*particleSystem, square};
 
         // The threshold for passing the level
         levelManager.setThreshold(water.getParticleCount() * 0.7);
@@ -59,7 +59,7 @@ Level3::Level3() {
         const b2Vec2 vertices[] {{-2.6, 30}, {-2.6, 33}, {-7.4, 30}, {-7.4, 33}};
         square.Set(vertices, 4);
 
-        Water poison {*m_particleSystem, square, Water::Type::poison};
+        Water poison {*particleSystem, square, Water::Type::poison};
     }
 
     // The poison
@@ -68,7 +68,7 @@ Level3::Level3() {
         const b2Vec2 vertices[] {{7.6, 5}, {7.6, 8}, {12.4, 5}, {12.4, 8}};
         square.Set(vertices, 4);
 
-        Water poison {*m_particleSystem, square, Water::Type::poison};
+        Water poison {*particleSystem, square, Water::Type::poison};
     }
 }
 

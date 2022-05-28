@@ -7,7 +7,7 @@ Level1::Level1() {
 
     // Ground body
     b2BodyDef bodyDef;
-    b2Body &ground {*m_world->CreateBody(&bodyDef)};
+    b2Body &ground {*world.CreateBody(&bodyDef)};
 
     // The border
     {
@@ -39,7 +39,7 @@ Level1::Level1() {
         const b2Vec2 vertices[] {{0, 10.05}, {-20, 10.05}, {-20, 15}, {0, 15}};
         square.Set(vertices, 4);
 
-        Water water {*m_particleSystem, square};
+        Water water {*particleSystem, square};
 
         // The threshold for passing the level
         levelManager.setThreshold(water.getParticleCount() * 0.9);
