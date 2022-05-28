@@ -12,13 +12,12 @@ class Level2: public Level {
     void drawTrigger(const Trigger&);
     void drawTriggers();
     void drawDoor();
-    Level2();
+    
 public:
+    Level2();
     // Detect the contact between the water and the trigger
     void BeginContact(b2ParticleSystem*, b2ParticleBodyContact*) override;
     void Step(int) override;
-
-    static Level *create();
 };
 
 #endif

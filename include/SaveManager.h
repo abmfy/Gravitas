@@ -1,7 +1,7 @@
 #ifndef SaveManager_h
 #define SaveManager_h
 
-extern const int levelCount;
+#include "Levels.h"
 
 // Singleton
 class SaveManager {

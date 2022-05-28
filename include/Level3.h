@@ -4,10 +4,9 @@
 #include "Level.h"
 
 class Level3: public Level {
-    Level3();
 public:
+    Level3();
     float GetDefaultViewZoom() const override;
-    static Level *create();
 };
 
 #endif

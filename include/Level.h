@@ -13,13 +13,6 @@ using TestCreateFcn = Level*();
 
 const int DRAW_STRING_NEW_LINE {25};
 
-struct TestEntry {
-	const char *name;
-	TestCreateFcn *createFcn;
-};
-
-extern TestEntry g_testEntries[];
-
 class Level: public b2ContactListener {
 public:
 	static const int gravityIntensity {100};

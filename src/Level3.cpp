@@ -75,7 +75,3 @@ Level3::Level3() {
 float Level3::GetDefaultViewZoom() const {
     return 1.5;
 }
-
-Level *Level3::create() {
-    return new Level3;
-}

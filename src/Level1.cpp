@@ -45,7 +45,3 @@ Level1::Level1() {
         levelManager.setThreshold(water.getParticleCount() * 0.9);
     }
 }
-
-Level *Level1::create() {
-    return new Level1;
-}

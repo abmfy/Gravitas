@@ -115,7 +115,3 @@ void Level2::Step(int paused) {
     drawTriggers();
     drawDoor();
 }
-
-Level *Level2::create() {
-    return new Level2;
-}

@@ -4,9 +4,8 @@
 #include "Level.h"
 
 class Level4: public Level {
-    Level4();
 public:
-    static Level *create();
+    Level4();
 };
 
 #endif

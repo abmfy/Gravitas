@@ -64,7 +64,3 @@ Level4::Level4() {
         world.CreateJoint(&jointDef);
     }
 }
-
-Level *Level4::create() {
-    return new Level4;
-}
