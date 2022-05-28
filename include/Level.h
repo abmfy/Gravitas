@@ -4,13 +4,13 @@
 #include "Box2D/Box2D.h"
 #include "Render.h"
 
+#include "DestructionListener.h"
 #include "LevelManager.h"
 
 class Level;
 
 using TestCreateFcn = Level*();
 
-const int RAND_LIMIT {32767};
 const int DRAW_STRING_NEW_LINE {25};
 
 struct TestEntry {
@@ -19,21 +19,8 @@ struct TestEntry {
 };
 
 extern TestEntry g_testEntries[];
-// This is called when a joint in the world is implicitly destroyed
-// because an attached body is destroyed. This gives us a chance to
-// nullify the mouse joint.
-class DestructionListener: public b2DestructionListener {
-public:
-	void SayGoodbye(b2Fixture*) override {}
-	void SayGoodbye(b2Joint*) override {};
-	void SayGoodbye(b2ParticleGroup*) override {};
 
-	void SayGoodbye(b2ParticleSystem*, int) override;
-
-	Level *level;
-};
-
-class Level: public b2ContactListener, b2DestructionListener {
+class Level: public b2ContactListener {
 public:
 	static const int gravityIntensity {100};
 	static constexpr double particleRadius {0.1};
@@ -48,12 +35,6 @@ public:
 	Level();
 	virtual ~Level();
 
-	void SayGoodbye(b2Fixture*) override {}
-	void SayGoodbye(b2Joint*) override {};
-	void SayGoodbye(b2ParticleGroup*) override {};
-
-	void SayGoodbye(b2ParticleSystem*, int) override;
-
     void DrawTitle(const char*);
 	virtual void Step(int);
 	virtual void KeyboardSpecial(int);
@@ -61,9 +42,8 @@ public:
 	virtual float GetDefaultViewZoom() const;
 
 protected:
-	friend class DestructionListener;
-
 	LevelManager levelManager;
+	DestructionListener destructionListener {levelManager};
 
 	b2Body *m_groundBody;
 	DebugDraw m_debugDraw;

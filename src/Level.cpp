@@ -6,10 +6,6 @@
 
 #include "SaveManager.h"
 
-void Level::SayGoodbye(b2ParticleSystem *system, int index) {
-    levelManager.leaking(*system, index);
-}
-
 Level::Level() {
     b2ParticleSystemDef particleSystemDef;
     b2Vec2 gravity {0, -static_cast<float>(gravityIntensity)};
@@ -17,7 +13,7 @@ Level::Level() {
     m_particleSystem = m_world->CreateParticleSystem(&particleSystemDef);
     m_textLine = 30;
 
-    m_world->SetDestructionListener(this);
+    m_world->SetDestructionListener(&destructionListener);
     m_world->SetContactListener(this);
     m_world->SetDebugDraw(&m_debugDraw);
     m_world->SetAllowSleeping(true);
