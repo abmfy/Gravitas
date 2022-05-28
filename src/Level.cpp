@@ -12,6 +12,8 @@ const b2ParticleSystemDef Level::defaultParticleSystemDef {};
 const b2BodyDef Level::defaultBodyDef {};
 
 Level::Level() {
+    
+
     textLine = 30;
 
     world.SetDestructionListener(&destructionListener);
@@ -30,8 +32,10 @@ Level::Level() {
 
 Level::~Level() {}
 
-void Level::DrawTitle(const char *string) {
-    debugDraw.DrawString(5, DRAW_STRING_NEW_LINE, string);
+void Level::drawTitle() {
+    char buf[16];
+    sprintf(buf, "Level %d", id);
+    debugDraw.DrawString(5, DRAW_STRING_NEW_LINE, buf);
     textLine = 2 * DRAW_STRING_NEW_LINE;
 
     debugDraw.DrawString(5, 605, "<ESC> Pause    [R] Restart    [P] Previous level    [N] Next level");
@@ -68,6 +72,7 @@ void Level::Step(int paused) {
         debugDraw.DrawString(5, textLine, "****PAUSED**** <ESC> Resume    [Q] Quit game");
         textLine += DRAW_STRING_NEW_LINE;
         world.DrawDebugData();
+        drawTitle();
         return;
     }
 
@@ -77,6 +82,7 @@ void Level::Step(int paused) {
         particleIterations);
 
     world.DrawDebugData();
+    drawTitle();
 
     // Remove the particles that went out of the screen
     {

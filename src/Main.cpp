@@ -70,7 +70,7 @@ static void SimulationLoop() {
 
     level->Step(paused);
 
-    level->DrawTitle(entry->name);
+    // level->DrawTitle(entry->name);
 
     glutSwapBuffers();
 

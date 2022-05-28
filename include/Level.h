@@ -33,18 +33,19 @@ public:
 	static const b2ParticleSystemDef defaultParticleSystemDef;
 	static const b2BodyDef defaultBodyDef;
 
-	int id;
-
 	Level();
 	virtual ~Level();
 
-    void DrawTitle(const char*);
+	void drawTitle();
+
 	virtual void Step(int);
 	virtual void KeyboardSpecial(int);
 
 	virtual float GetDefaultViewZoom() const;
 
 protected:
+	int id;
+
 	LevelManager levelManager;
 	DestructionListener destructionListener {levelManager};
 
