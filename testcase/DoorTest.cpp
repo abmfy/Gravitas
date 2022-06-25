@@ -1,3 +1,4 @@
+#include <cassert>
 #include <iostream>
 using std::cout, std::endl;
 
@@ -17,12 +18,15 @@ int main() {
     cout << "Testing Door" << endl;
     printStatus();
     printColor();
+    assert(!door.isOpen());
     cout << "Open the door!" << endl;
     door.open();
     printStatus();
     printColor();
+    assert(door.isOpen());
     cout << "Open the door again." << endl;
     door.open();
     printStatus();
     printColor();
+    assert(door.isOpen());
 }

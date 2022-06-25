@@ -3,3 +3,7 @@
 /bin
 /obj
 save.dat
+*.aux
+*.log
+*.pdf
+*/*.dSYM

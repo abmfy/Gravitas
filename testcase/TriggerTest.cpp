@@ -1,3 +1,4 @@
+#include <cassert>
 #include <iostream>
 using std::cout, std::endl;
 
@@ -14,11 +15,13 @@ int main() {
     Trigger t1 {3};
     cout << "Creating a trigger with threshold 3" << endl;
     printStatus(t1);
+    assert(!t1.isTriggered());
     for (int i {1}; i <= 5; i++) {
         cout << "The " << i << "-th try to trigger:" << endl;
         t1.trigger();
         printStatus(t1);
     }
+    assert(t1.isTriggered());
 
     Trigger t2 {0};
     cout << "Creating a trigger with threshold 0" << endl;
@@ -28,4 +31,5 @@ int main() {
         t2.trigger();
         printStatus(t2);
     }
+    assert(t2.isTriggered());
 }
