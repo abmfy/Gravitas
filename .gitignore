@@ -1,4 +1,4 @@
-*/.DS_Store
+.DS_Store
 /.vscode
 /bin
 /obj
@@ -7,3 +7,5 @@ save.dat
 *.log
 *.pdf
 */*.dSYM
+lib/*
+*.icloud
